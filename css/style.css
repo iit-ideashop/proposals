@@ -5,6 +5,30 @@ header .navbar-brand {
   font-weight: bold;
   font-size: 1.5em; }
 
+.label-0 {
+  background-color: red; }
+
+.label-1 {
+  background-color: #808080; }
+
+.label-2 {
+  background-color: steelblue; }
+
+.label-3 {
+  background-color: darkred; }
+
+.label-4 {
+  background-color: steelblue; }
+
+.label-5 {
+  background-color: darkred; }
+
+.label-6 {
+  background-color: steelblue; }
+
+.label-7 {
+  background-color: darkgreen; }
+
 #main-focus-area h1 {
   font-size: 2.5em;
   padding-bottom: 0.25em;
@@ -12,3 +36,21 @@ header .navbar-brand {
 
 #dashboard h3 {
   font-weight: bold; }
+
+#proposal-list {
+  list-style: none;
+  padding-left: 0; }
+  #proposal-list .proposal-item {
+    background-color: #b3b3b3;
+    margin-top: 0.5em;
+    line-height: 2.5em; }
+    #proposal-list .proposal-item .btn {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em; }
+    #proposal-list .proposal-item a {
+      text-decoration: none;
+      color: #333; }
+      #proposal-list .proposal-item a:hover {
+        color: white; }
+      #proposal-list .proposal-item a:active {
+        color: white; }

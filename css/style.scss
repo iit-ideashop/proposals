@@ -14,6 +14,46 @@ header {
   }
 }
 
+.label-0 {
+  // Denied
+  background-color: red;
+}
+
+.label-1 {
+  // Awaiting submission
+  background-color: #808080;
+}
+
+.label-2 {
+  // Submitted to dean
+  background-color: steelblue;
+}
+
+.label-3 {
+  // Dean revision deny
+  background-color: darkred;
+}
+
+.label-4 {
+  // Committee approval
+  background-color: steelblue;
+}
+
+.label-5 {
+  // Committee revision deny
+  background-color: darkred;
+}
+
+.label-6 {
+  // Executive approved
+  background-color: steelblue;
+}
+
+.label-7 {
+  // IPRO Approved
+  background-color: darkgreen;
+}
+
 #main-focus-area {
   h1 {
     font-size: 2.5em;
@@ -25,5 +65,29 @@ header {
 #dashboard {
   h3 {
     font-weight: bold;
+  }
+}
+
+#proposal-list {
+  list-style: none;
+  padding-left: 0;
+  .proposal-item {
+    background-color: lighten(black, 70);
+    margin-top: 0.5em;
+    line-height: 2.5em;
+    .btn {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+    a {
+      text-decoration: none;
+      color: #333;
+      &:hover {
+        color: white;
+      }
+      &:active {
+        color: white;
+      }
+    }
   }
 }
