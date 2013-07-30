@@ -1,4 +1,5 @@
-<?php 
+<?php
+//proposal.php used for proposals, editing proposals and creating new ones
 include_once('include/headers.php');
 Login::loginCheck(0);
 ?>

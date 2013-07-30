@@ -20,6 +20,7 @@ class Proposal {
     private $TimeEnd;
     private $CourseNumber; // This will be 0 by default and when approved will be assigned an IPRO number IPRO 397-###
     private $OwnerID;
+    private $status;
     private $dbconn;
     function __construct($proposalID){
         //This class is used to load and store proposal objects to and from the database
