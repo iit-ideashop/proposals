@@ -116,11 +116,68 @@ class Proposal {
        }
    }
    
+   
+   function generateDeanDropdown(){
+       //This function generates a dropdown list of the deans + colleges and the value field is a integer for ID
+       $sql = "SELECT * FROM deans";
+       $result = $this->dbconn->query($sql);
+       $output = '<select name="approvingDean">';
+       while($rows = $result->fetch_assoc()){
+           $output .='<option value="'.$rows['id'].'">'.$rows['deanName'].' '.$rows['school'].'</option>';
+       }
+       $output .= '</select>';
+       return $output;
+   }
+   
+   
+   
+   //getters and setters
+   function getInstructor(){
+       return $this->Instructor;
+   }
+   
+   function setInstructor($newInstructor){
+       $this->Instructor = $newInstructor;
+   }
+   
+   function getInstructorEmail(){
+       return $this->InstructorEmail;
+   }
+   
+   function setInstructorEmail($newEmail){
+       $this->InstructorEmail = $newEmail;
+   }
     
+   function getCoInstructor(){
+       return $this->CoInstructor;
+   }
+   
+   function setCoInstructor($newCoInstructor){
+       $this->CoInstructor = $newCoInstructor;
+   }
     
+   function getCoInstructorEmail(){
+       return $this->CoInstructorEmail;
+   }
+   
+   function setCoInstructorEmail($newEmail){
+       $this->CoInstructorEmail = $newEmail;
+   }
     
+   function getSponsor(){
+       return $this->Sponsor;
+   }
     
+   function setSponsor($newSponsor){
+       $this->Sponsor = $newSponsor;
+   }
     
+   function getApprovingDean(){
+       return $this->ApprovingDean;
+   }
+   
+   function setApprovingDean($newDean){
+       $this->ApprovingDean = $newDean;
+   }
 }
-
 ?>
