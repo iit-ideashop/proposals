@@ -21,7 +21,7 @@ header {
 
 .label-1 {
   // Awaiting submission
-  background-color: #808080;
+  background-color: gray;
 }
 
 .label-2 {
@@ -90,7 +90,7 @@ header {
       }
     }
     &:hover {
-      background-color: lighten(black, 50);
+      background-color: lighten(black, 60);
     }
     &:active {
       background-color: lighten(black, 40);
