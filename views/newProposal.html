@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en  ">
+<head>
+  <title>IPRO Proposals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/application.js"></script>
+</head>
+<body>
+
+<header class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">IPRO Proposals</a>
+    <nav class="pull-right">
+      <a href="#" class="btn btn-primary navbar-btn">Approvals <span class="badge">10</span></a>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary navbar-btn dropdown-toggle" data-toggle="dropdown">
+          Dasboard <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="dashboard.html">Proposals</a></li>
+          <li><a href="archive.html">Archive</a></li>
+        </ul>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-success navbar-btn dropdown-toggle" data-toggle="dropdown">
+          User <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Settings</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div id="new-proposal">
+  <div class="container jumbotron">
+    <div class="title">
+      <h3>
+        New Proposal Application
+        <div class="pull-right">
+          <a href="#" class="btn btn-danger">Cancel</a>
+          <a href="#" class="btn btn-primary">Submit for Approval</a>
+          <a href="#" class="btn btn-success">Save as Draft</a>
+        </div>
+      </h3>
+    </div>
+    <div class="row">
+      <form>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="projectTitle" placeholder="IPRO Project Title">
+          </div>
+          <div class="form-group">
+            <label>Problem or Issue</label>
+            <textarea class="form-control" rows="6" name="problem" placeholder="What problems will the IPRO Address?"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Objective</label>
+            <textarea class="form-control" rows="6" name="objectives" placeholder="What objectives will be achieved?"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Approach</label>
+            <textarea class="form-control" rows="6" name="approach" placeholder="What approach will the team take?"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Class Information</label>
+            <div>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">Su
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">M
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">T
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">W
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">Th
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">F
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">Sa
+              </label>
+            </div>
+            <div>
+              <label class="radio-inline">
+                <input type="radio" value="">Morning
+              </label>
+              <label class="radio-inline">
+                <input type="radio" value="">Afternoon
+              </label>
+              <label class="radio-inline">
+                <input type="radio" value="">Evening
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Semester Information</label>
+            <div>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">Fall
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">Spring
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">Summer
+              </label>
+            </div>
+            <div>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">Year1
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">Year2
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="">Year3
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label>Primary Instructor Information</label>
+            <input type="text" class="form-control" name="instructorName" placeholder="Instructor Name">
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control" name="instructorEmail" placeholder="Instructor Email">
+          </div>
+          <div class="form-group">
+            <label>Co-Instructor Information</label>
+            <input type="text" class="form-control" name="coInstructorName" placeholder="Co-Instructor Name">
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control" name="coInstructorEmail" placeholder="Co-Instructor Email">
+          </div>
+          <div class="form-group">
+            <label>College Dean</label>
+            <select class="form-control">
+              <option>Dean1</option>
+              <option>Dean2</option>
+              <option>Dean3</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Sponsor Information</label>
+            <input type="text" class="form-control" name="sponsor" placeholder="Sponsor">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="sponsorEmail" placeholder="Sponsor Email">
+          </div>
+          <div class="form-group">
+            <label>Targeted Disciplines</label>
+            <div>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="Discipline1"> Discipline 1
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="Discipline2"> Discipline 2
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="Discipline3"> Discipline 3
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="" value="Discipline4"> Discipline 4
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
