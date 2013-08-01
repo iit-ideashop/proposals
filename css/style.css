@@ -1,0 +1,68 @@
+body {
+  padding-top: 70px; }
+
+header .navbar-brand {
+  font-weight: bold;
+  font-size: 1.5em; }
+
+h3 {
+  font-weight: bold; }
+
+.label-0 {
+  background-color: red; }
+
+.label-1 {
+  background-color: gray; }
+
+.label-2 {
+  background-color: steelblue; }
+
+.label-3 {
+  background-color: darkred; }
+
+.label-4 {
+  background-color: steelblue; }
+
+.label-5 {
+  background-color: darkred; }
+
+.label-6 {
+  background-color: steelblue; }
+
+.label-7 {
+  background-color: darkgreen; }
+
+.title {
+  margin-bottom: 1em; }
+
+#main-focus-area h1 {
+  font-size: 2.5em;
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid #999999; }
+
+#new-proposal h3 {
+  margin-bottom: 1em; }
+#new-proposal label {
+  font-size: 0.75em; }
+
+#proposal-list {
+  list-style: none;
+  padding-left: 0; }
+  #proposal-list .proposal-item {
+    background-color: #b3b3b3;
+    margin-top: 0.5em;
+    line-height: 2.5em; }
+    #proposal-list .proposal-item .btn {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em; }
+    #proposal-list .proposal-item a {
+      text-decoration: none;
+      color: #333; }
+      #proposal-list .proposal-item a:hover {
+        color: white; }
+      #proposal-list .proposal-item a:active {
+        color: white; }
+    #proposal-list .proposal-item:hover {
+      background-color: #999999; }
+    #proposal-list .proposal-item:active {
+      background-color: #666666; }
