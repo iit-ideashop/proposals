@@ -89,5 +89,11 @@ header {
         color: white;
       }
     }
+    &:hover {
+      background-color: lighten(black, 50);
+    }
+    &:active {
+      background-color: lighten(black, 40);
+    }
   }
 }

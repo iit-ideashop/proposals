@@ -54,3 +54,7 @@ header .navbar-brand {
         color: white; }
       #proposal-list .proposal-item a:active {
         color: white; }
+    #proposal-list .proposal-item:hover {
+      background-color: gray; }
+    #proposal-list .proposal-item:active {
+      background-color: #666666; }
