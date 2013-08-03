@@ -22,6 +22,7 @@ class Login{
         if($loginResult->num_rows == 1){
             //login successful
             $user = $loginResult->fetch_assoc();
+            $_SESSION['proposal_userID'] = $user['id'];
             $_SESSION['proposal_FName'] = $user['FName'];
             $_SESSION['proposal_LName'] = $user['LName'];
             $_SESSION['proposal_Username'] = $user['Username'];
@@ -47,7 +48,7 @@ class Login{
         
         if($_SESSION['proposal_LoggedIn'] != true){
             //user is not logged in kick them out to the sign in page
-            header("location:login.php");
+            header("location:index.php");
             exit;
         }
         if(($_SESSION['proposal_UserLevel'] < 9)&&($levelRequired == 9)){

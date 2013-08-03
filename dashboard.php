@@ -3,74 +3,232 @@ include_once('include/headers.php');
 Login::loginCheck(0);
 ?>
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>IPRO Proposals</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<html lang="en  ">
+<head>
+  <title>IPRO Proposals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/application.js"></script>
+</head>
+<body>
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="ico/favicon.png">
-  </head>
-
-  <body>
-      <?php 
-        //include the navigation bar controller from include/nav.php
-        include('include/nav.php');
-      ?>
-    
-
-    <div class="container">
-
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>Proposal, not paperwork</h1>
-        <p>Welcome to IPROs new proposal system. This system is meant to ease the proposal process and enhance the experience. Login to get started!</p>
-        <p><a href="#" class="btn btn-primary btn-large">Login</a></p>
+<header class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">IPRO Proposals</a>
+    <nav class="pull-right">
+      <a href="approvals.html" class="btn btn-primary navbar-btn">Approvals <span class="badge">10</span></a>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary navbar-btn dropdown-toggle" data-toggle="dropdown">
+          Dasboard <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="dashboard.html">Proposals</a></li>
+          <li><a href="archive.html">Archive</a></li>
+        </ul>
       </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary navbar-btn dropdown-toggle" data-toggle="dropdown">
+          User <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Settings</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
 
-      <hr>
-    </div> <!-- /container -->
+<div id="dashboard">
+  <div class="container jumbotron">
+    <div class="title">
+      <h3>
+        My Proposals
+        <div class="pull-right">
+          <a href="archive.html" class="btn btn-default">View Archive</a>
+          <a href="Proposal.php" class="btn btn-success">Create a new proposal</a>
+        </div>
+      </h3>
+    </div>
+    <ul id="proposal-list">
+      <li class="proposal-item row">
+        <div class="col-lg-7">
+          <a href="#"><span>Project Title</span></a>
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="label label-1">Awaiting Submission</span>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit</a></li>
+              <li><a href="#">View</a></li>
+              <li><a href="#">Submit</a></li>
+              <li><a href="#">Archive</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="proposal-item row">
+        <div class="col-lg-7">
+          <a href="#"><span>Project Title</span></a>
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="label label-2">Submitted to Dean</span>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit</a></li>
+              <li><a href="#">View</a></li>
+              <li><a href="#">Submit</a></li>
+              <li><a href="#">Archive</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="proposal-item row">
+        <div class="col-lg-7">
+          <a href="#"><span>Project Title</span></a>
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="label label-3">Denied - Dean Revised</span>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit</a></li>
+              <li><a href="#">View</a></li>
+              <li><a href="#">Submit</a></li>
+              <li><a href="#">Archive</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="proposal-item row">
+        <div class="col-lg-7">
+          <a href="#"><span>Project Title</span></a>
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="label label-4">Approved by Committee</span>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit</a></li>
+              <li><a href="#">View</a></li>
+              <li><a href="#">Submit</a></li>
+              <li><a href="#">Archive</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="proposal-item row">
+        <div class="col-lg-7">
+          <a href="#"><span>Project Title</span></a>
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="label label-5">Denied - Committee Revised</span>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit</a></li>
+              <li><a href="#">View</a></li>
+              <li><a href="#">Submit</a></li>
+              <li><a href="#">Archive</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="proposal-item row">
+        <div class="col-lg-7">
+          <a href="#"><span>Project Title</span></a>
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="label label-6">Awaiting Final Approval</span>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit</a></li>
+              <li><a href="#">View</a></li>
+              <li><a href="#">Submit</a></li>
+              <li><a href="#">Archive</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="proposal-item row">
+        <div class="col-lg-7">
+          <a href="#"><span>Project Title</span></a>
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="label label-7">IPRO Approved!</span>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit</a></li>
+              <li><a href="#">View</a></li>
+              <li><a href="#">Submit</a></li>
+              <li><a href="#">Archive</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="proposal-item row">
+        <div class="col-lg-7">
+          <a href="#"><span>Project Title</span></a>
+        </div>
+        <div class="col-lg-3 text-center">
+          <span class="label label-0">DENIED</span>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-group btn-block">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit</a></li>
+              <li><a href="#">View</a></li>
+              <li><a href="#">Submit</a></li>
+              <li><a href="#">Archive</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap-transition.js"></script>
-    <script src="js/bootstrap-alert.js"></script>
-    <script src="js/bootstrap-modal.js"></script>
-    <script src="js/bootstrap-dropdown.js"></script>
-    <script src="js/bootstrap-scrollspy.js"></script>
-    <script src="js/bootstrap-tab.js"></script>
-    <script src="js/bootstrap-tooltip.js"></script>
-    <script src="js/bootstrap-popover.js"></script>
-    <script src="js/bootstrap-button.js"></script>
-    <script src="js/bootstrap-collapse.js"></script>
-    <script src="js/bootstrap-carousel.js"></script>
-    <script src="js/bootstrap-typeahead.js"></script>
-
-  </body>
+</body>
 </html>
 
 

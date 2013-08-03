@@ -1,5 +1,31 @@
+<?php
+include_once('include/headers.php');
+Login::loginCheck(1);
+if(isset($_POST['submit'])){
+    //The submit button has been pressed
+    $proposal;
+    if((@$_POST['newFlag'] == 1)||(intval(@$_POST['proposalID']) == 0)){
+        $proposal = new Proposal(0);
+        $proposal->readProposalfromForm();
+        $proposal->saveToDatabase();
+        header("Location:Proposal.php");
+        exit;
+    }else{
+        //We should have a proposal object
+        $proposal = new Proposal(@$_POST['proposalID']);
+    }
+    
+}
+if(isset($_GET['proposalObj'])){
+    //We are going to be loading an object from the database based on proposalObj
+    $pageProposal = new Proposal($_POST['proposalObj']);//Use this on the rest of the page
+}
+    
+
+
+?>
 <!DOCTYPE html>
-<html lang="en  ">
+<html lang="en">
 <head>
   <title>IPRO Proposals</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,15 +71,26 @@
     <div class="title">
       <h3>
         New Proposal Application
+        <form action="" method="POST">
+            <?php
+                //here we will use hidden form fields to get data
+                if(@$_GET['newFlag'] == 1){
+                    //We have a new proposal being generated
+                    echo '<input type="hidden" name="newFlag" value="1">';
+                }
+                if((isset($_GET['proposalID']))&&(intval(@$_GET['proposalID']) != 0)){
+                    echo '<input type="hidden" name="proposalID" value="'.$_GET['proposalID'].'">';
+                }
+            ?>
         <div class="pull-right">
           <a href="#" class="btn btn-danger">Cancel</a>
-          <a href="#" class="btn btn-primary">Submit for Approval</a>
+          <input type="submit" name="submit" class="btn btn-primary" value="Submit for Approval">
           <a href="#" class="btn btn-success">Save as Draft</a>
         </div>
       </h3>
     </div>
     <div class="row">
-      <form>
+      
         <div class="col-lg-6">
           <div class="form-group">
             <label>Title</label>
@@ -75,45 +112,42 @@
             <label>Class Information</label>
             <div>
               <label class="checkbox-inline">
-                <input type="checkbox" name="" value="">Su
+                <input type="checkbox" name="day-0" value="">M
               </label>
               <label class="checkbox-inline">
-                <input type="checkbox" name="" value="">M
+                <input type="checkbox" name="day-1" value="">T
               </label>
               <label class="checkbox-inline">
-                <input type="checkbox" name="" value="">T
+                <input type="checkbox" name="day-2" value="">W
               </label>
               <label class="checkbox-inline">
-                <input type="checkbox" name="" value="">W
+                <input type="checkbox" name="day-3" value="">Th
               </label>
               <label class="checkbox-inline">
-                <input type="checkbox" name="" value="">Th
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="" value="">F
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="" value="">Sa
+                <input type="checkbox" name="day-4" value="">F
               </label>
             </div>
             <div>
               <label class="radio-inline">
-                <input type="radio" value="">Morning
+                <input type="radio" name="time" value="Morning">Morning
               </label>
               <label class="radio-inline">
-                <input type="radio" value="">Afternoon
+                <input type="radio" name="time" value="Afternoon">Afternoon
               </label>
               <label class="radio-inline">
-                <input type="radio" value="">Evening
+                <input type="radio" name="time" value="Evening">Evening
               </label>
             </div>
             <div class="form-group">
               <label>Available Semesters</label>
+              <?php echo Proposal::generateNextSemesterDropdown(0); ?>
+              <!-- Semester dropdown prototype
               <select class="form-control">
                 <option>Option1</option>
                 <option>Option2</option>
                 <option>Option3</option>
               </select>
+              -->
             </div>
           </div>
         </div>
@@ -134,34 +168,29 @@
           </div>
           <div class="form-group">
             <label>College Dean</label>
+            <?php echo Proposal::generateDeanDropdown(0); ?>
+            <!--  Dean Dropdown Prototype
             <select class="form-control">
               <option>Dean1</option>
               <option>Dean2</option>
               <option>Dean3</option>
             </select>
+            -->
           </div>
           <div class="form-group">
             <label>Sponsor Information</label>
             <input type="text" class="form-control" name="sponsor" placeholder="Sponsor">
           </div>
-          <div class="form-group">
-            <input type="text" class="form-control" name="sponsorEmail" placeholder="Sponsor Email">
-          </div>
+          
           <div class="form-group">
             <label>Targeted Disciplines</label>
             <div>
-              <label class="checkbox-inline">
+                <?php echo Proposal::generateDisciplinesCheckboxes(0); ?>
+              <!-- Checkbox Prototype
+                <label class="checkbox-inline">
                 <input type="checkbox" name="" value="Discipline1"> Discipline 1
               </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="" value="Discipline2"> Discipline 2
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="" value="Discipline3"> Discipline 3
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="" value="Discipline4"> Discipline 4
-              </label>
+              -->
             </div>
           </div>
         </div>

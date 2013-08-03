@@ -1,70 +1,64 @@
+<?php
+include('include/headers.php');
+//process the login here using the login object found under classes/login.php
+if(isset($_POST['submit'])){
+    //process the login
+    $loginObj = new Login();
+    $loginObj->authenticate($_POST['username'], $_POST['password']);
+}
+?>
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>IPRO Proposals</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<html lang="en  ">
+<head>
+  <title>IPRO Proposals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/application.js"></script>
+</head>
+<body>
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<header class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">IPRO Proposals</a>
+    <nav class="pull-right">
+      <a href="http://ipro.iit.edu/" target="_blank" class="btn btn-danger navbar-btn">Visit IPRO Homepage</a>
+      <a href="index.html" class="btn btn-primary navbar-btn">Login</a>
+    </nav>
+  </div>
+</header>
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="ico/favicon.png">
-  </head>
-
-  <body>
-      <?php 
-        //include the navigation bar controller from include/nav.php
-        include('include/nav.php');
-      ?>
-    
-
-    <div class="container">
-
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>Proposal, not paperwork</h1>
-        <p>Welcome to IPROs new proposal system. This system is meant to ease the proposal process and enhance the experience. Login to get started!</p>
-        <p><a href="#" class="btn btn-primary btn-large">Login</a></p>
+<div id="main-focus-area">
+  <div class="container jumbotron">
+    <div class="row text-center">
+      <div class="col-lg-8">
+        <h1>Proposals, not paperwork</h1>
+        <p>
+          Welcome to IPRO's new proposal system meant to ease the process and enhance the experience.
+          Login to get started!
+        </p>
       </div>
+      <div class="col-lg-4">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+          <h4>
+            New user?
+            <a href="signup.html">Sign up now!</a>
+          </h4>
+          <div class="form-group">
+            <input type="text" class="form-control input-large" name="username" id="username" placeholder="Username">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control input-large" id="password" name="password" placeholder="Password">
+          </div>
+          <button type="submit" name="submit" class="btn btn-primary btn-large">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <hr>
-    </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap-transition.js"></script>
-    <script src="js/bootstrap-alert.js"></script>
-    <script src="js/bootstrap-modal.js"></script>
-    <script src="js/bootstrap-dropdown.js"></script>
-    <script src="js/bootstrap-scrollspy.js"></script>
-    <script src="js/bootstrap-tab.js"></script>
-    <script src="js/bootstrap-tooltip.js"></script>
-    <script src="js/bootstrap-popover.js"></script>
-    <script src="js/bootstrap-button.js"></script>
-    <script src="js/bootstrap-collapse.js"></script>
-    <script src="js/bootstrap-carousel.js"></script>
-    <script src="js/bootstrap-typeahead.js"></script>
-
-  </body>
+</body>
 </html>

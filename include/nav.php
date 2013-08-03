@@ -20,6 +20,6 @@
     </div>
 <?php
 //here we will process the flashbangs
-include('classes/FlashBang.php');
+include_once('classes/FlashBang.php');
 echo FlashBang::getFlashBang();
 ?>

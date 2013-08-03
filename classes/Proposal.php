@@ -1,6 +1,6 @@
 <?php
 //Proposal Class
-//Used for loading proposals 
+//This class is used to load and store proposal objects to and from the database 
 class Proposal {
     private $ID;
     private $Instructor; 
@@ -22,18 +22,52 @@ class Proposal {
     private $status;
     private $dbconn;
     function __construct($proposalID){
-        //This class is used to load and store proposal objects to and from the database
         $this->dbconn = new Database();
         $this->dbconn = $this->dbconn->getConnection();
-        
+        //next we need to load the proposal from the database if the proposal ID is not 0
+        if(intval($proposalID != 0)){
+            //Load from database
+            $loadProposalSql = "SELECT * FROM proposals WHERE ID='".intval($proposalID)."' LIMIT 1";
+            $loadProposalResult = $this->dbconn->query($loadProposalSql);
+            //WARNING: THIS WILL LOAD ANY PROPOSAL AND WILL NOT CHECK THE USER'S PERMISSIONS
+            //FOR VIEW/EDIT, HOWEVER WHEN MAKING CHANGES THE CLASS WILL CHECK PERMISSIONS
+            //FOR VIEWING PURPOSES RUN THE CHECKPERMISSION FUNCTION FIRST
+            if($loadProposalResult->num_rows == 1){
+                $rows = $loadProposalResult->fetch_assoc();
+                $this->ID = $rows['ID'];
+                $this->Instructor = $rows['Instructor'];
+                $this->InstructorEmail = $rows['InstructorEmail'];
+                $this->CoInstructor = $rows['CoInstructor'];
+                $this->CoInstructorEmail = $rows['CoInstructorEmail'];
+                $this->Sponsor = $rows['Sponsor'];
+                $this->ApprovingDean = $rows['ApprovingDean'];
+                $this->Disciplines = unserialize($rows['Disciplines']);
+                $this->Title = $rows['Title'];
+                $this->Problem = $rows['Problem'];
+                $this->Objective = $rows['Objective'];
+                $this->Approach = $rows['Approach'];
+                $this->Semester = $rows['Semester'];
+                $this->Days = unserialize($rows['Days']);
+                $this->Time = $rows['Time'];
+                $this->CourseNumber = $rows['CourseNumber'];
+                $this->OwnerID = $rows['OwnerID'];
+                $this->status = $rows['status'];
+            }
+        }else{
+            $this->OwnerID = $_SESSION['proposal_userID'];
+            $this->CourseNumber = 0;
+            $this->status = 0;
+        }
         
     }
     
     static function generateDisciplinesCheckboxes($checkedArray){
         //This function will generate checkboxes for the disciplines in the database.
         //First we must pull all of the disciplines from the database
+        $dbconnlocal = new Database();
+        $dbconnlocal = $dbconnlocal->getConnection();
         $sql = "SELECT * FROM disciplines";
-        $result = $this->dbconn->query($sql);
+        $result = $dbconnlocal->query($sql);
         $discipleArray = array();
         while($rows = $result->fetch_assoc()){
             $discipleArray[$rows['id']] = $rows['disciplineName'];
@@ -44,31 +78,79 @@ class Proposal {
         }
         //Next we generate the checkboxes
         $output = '';
-        for($i=1;$i < count($discipleArray);$i++){
+        for($i=1;$i <= count($discipleArray);$i++){
+            $checked = '';
             if(in_array($i, $checkedArray)){
                 $checked = 'checked="checked"';
             }
-            $output .= '<input type="checkbox" '.$checked.' name="disc-'.$i.'">';
+            $output .= '<label class="checkbox-inline">
+                <input type="checkbox" name="disc-'.$i.'" '.$checked.'> '.$discipleArray[$i].'
+              </label>';
         }
+        $dbconnlocal->close();
         return $output;
+    }
+    
+    function readFromDiscipleCheckboxes(){
+        //This function is used to read the checkboxes values and put the ID's into an array.
+        //First let's get the values we can read
+        $sql = "SELECT * FROM disciplines";
+        $result = $this->dbconn->query($sql);
+        $discipleArray = array();
+        while($rows = $result->fetch_assoc()){
+            $discipleArray[$rows['id']] = $rows['disciplineName'];
+        }
+        $checkboxesArray = array();
+        //Now let's loop
+        foreach($discipleArray as $key=>$value){
+            //$key is the Disciple ID
+            //$value is the DISCIPLE value
+            if(isset($_POST['disc-'.$key])){
+                //Value is set now let's see if it's on
+                if($_POST['disc-'.$key] == 'on'){
+                    //checkbox was checked! add $key to the array using array_push
+                    array_push($checkboxesArray, $key);
+                }
+            }
+        }
+        return $checkboxesArray;
+    }
+    
+    function readDayfromForm(){
+        //This is going to be really simple, we have to return the day array in the form OF 0-4 being MON-FRI
+        $dayArray = array();
+        for($i=0;$i<4;$i++){
+            if(isset($_POST['day-'.$i])){
+                if($_POST['day-'.$i] == 'on'){
+                    array_push($dayArray,$i);
+                }
+            }
+        }
+        return $dayArray;
     }
     
     function readProposalfromForm(){
         //Here we are going to read posted data from the form and set all of the local variables
-        $this->Instructor = $_POST[''];
-        $this->InstructorEmail = $_POST[''];
-        $this->CoInstructor = $_POST[''];
-        $this->CoInstructorEmail = $_POST[''];
-        $this->Sponsor = $_POST[''];
-        $this->Disciplines = $_POST['']; // This needs use another function to get the checked array
-        $this->ApprovingDean = $_POST[''];
-        $this->Title = $_POST[''];
-        $this->Problem = $_POST[''];
-        $this->Objective = $_POST[''];
-        $this->Approach = $_POST[''];
-        $this->Days = $_POST[''];//
-        $this->Time = $_POST[''];
-        $this->Semester = $_POST[''];
+        $this->Instructor = $_POST['instructorName'];
+        $this->InstructorEmail = $_POST['instructorEmail'];
+        $this->CoInstructor = $_POST['coInstructorName'];
+        $this->CoInstructorEmail = $_POST['coInstructorEmail'];
+        $this->Sponsor = $_POST['sponsor'];
+        
+        //To get this value we have to run readFromDiscipleCheckboxes and it returns an array of checkboxes
+        $this->Disciplines = $this->readFromDiscipleCheckboxes();
+        
+        $this->ApprovingDean = $_POST['approvingDean'];
+        $this->Title = $_POST['projectTitle'];
+        $this->Problem = $_POST['problem'];
+        $this->Objective = $_POST['objectives'];
+        $this->Approach = $_POST['approach'];
+
+        //We use the readDayfromForm function to get an array 0-4 of days MON-FRI
+        $this->Days = $this->readDayfromForm();
+        
+        $this->Time = $_POST['time'];//values are Morning, Afternoon, Evening
+        $this->Semester = $_POST['semester'];
    }
    
    function saveToDatabase(){
@@ -88,9 +170,9 @@ class Proposal {
                     VALUES('".$this->Instructor."','".$this->InstructorEmail."'
                         ,'".$this->CoInstructor."','".$this->CoInstructorEmail."',
                             '".$this->Sponsor."','".$this->ApprovingDean."',
-                                '".$this->Disciplines."','".$this->Title."','".$this->Problem."'
+                                '".serialize($this->Disciplines)."','".$this->Title."','".$this->Problem."'
                                     ,'".$this->Objective."','".$this->Approach."','".$this->Semester."',
-                                        '".$this->Days."','".$this->Time."','".$this->CourseNumber."',
+                                        '".serialize($this->Days)."','".$this->Time."','".$this->CourseNumber."',
                                             '".$this->OwnerID."','".$this->status."')";
            $query = $this->dbconn->query($sql);
        }else{
@@ -101,13 +183,13 @@ class Proposal {
                CoInstructorEmail='".$this->CoInstructorEmail."',
                Sponsor='".$this->Sponsor."',
                ApprovingDean='".$this->ApprovingDean."',
-               Disciplines='".$this->Disciplines."',
+               Disciplines='".serialize($this->Disciplines)."',
                Title='".$this->Title."',
                Problem='".$this->Problem."',
                Objective='".$this->Objective."',
                Approach='".$this->Approach."',
                Semester='".$this->Semester."',
-               Days='".$this->Days."',
+               Days='".serialize($this->Days)."',
                Time='".$this->Time."',
                CourseNumber='".$this->CourseNumber."',
                OwnerID='".$this->OwnerID."',
@@ -117,19 +199,52 @@ class Proposal {
    }
    
    
-   function generateDeanDropdown(){
+   static function generateDeanDropdown($selectedID){
        //This function generates a dropdown list of the deans + colleges and the value field is a integer for ID
        $sql = "SELECT * FROM deans";
-       $result = $this->dbconn->query($sql);
-       $output = '<select name="approvingDean">';
+       $dbconnlocal = new Database();
+       $dbconnlocal = $dbconnlocal->getConnection();
+       $result = $dbconnlocal->query($sql);
+       $output = '<select name="approvingDean" class="form-control">';
        while($rows = $result->fetch_assoc()){
-           $output .='<option value="'.$rows['id'].'">'.$rows['deanName'].' '.$rows['school'].'</option>';
+           $selected = '';
+           if(($rows['id'] == $selectedID)&&($selectedID != 0)){
+               $selected='selected="selected"';
+           }
+           $output .='<option '.$selected.' value="'.$rows['id'].'">'.$rows['deanName'].' - '.$rows['school'].'</option>';
        }
        $output .= '</select>';
        return $output;
    }
    
-   
+   static function generateNextSemesterDropdown($selectedValue){
+       //Get the current year and month
+       $year = date('Y');
+       $month = date('n');
+       $semesterDropdownValues = array();
+       if(($month >= 1)&&($month <= 4)){
+           //Summer same year is first
+           $semesterDropdownValues = array('SUMMER'.$year,'FALL'.$year,'SPRING'.($year+1),'SUMMER'.($year+1),'FALL'.($year+1),'SPRING'.($year+2));
+       }elseif(($month >=5)&&($month <= 6)){
+           //Fall same year is first
+           $semesterDropdownValues = array('FALL'.$year,'SPRING'.($year+1),'SUMMER'.($year+1),'FALL'.($year+1),'SPRING'.($year+2),'SUMMER'.($year+2));
+       }elseif(($month >=7)&&($month <=12)){
+           //Spring next year is first
+           $semesterDropdownValues = array('SPRING'.($year+1),'SUMMER'.($year+1),'FALL'.($year+1),'SPRING'.($year+2),'SUMMER'.($year+2),'FALL'.($year+2));
+       }
+       //Next we generate the dropdown
+       $output = '<select class="form-control" name="semester">';
+       for($i=0;$i<count($semesterDropdownValues);$i++){
+           $selected = '';
+           if($semesterDropdownValues[$i] === $selectedValue){
+               $selected = 'selected="selected"';
+           }
+           $output .='<option '.$selected.' value="'.$semesterDropdownValues[$i].'">'.$semesterDropdownValues[$i].'</option>';
+           $selected = '';
+       }
+       $output .='</select>';
+       return $output;
+   }
    
    //getters and setters
    function getInstructor(){
