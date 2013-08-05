@@ -58,6 +58,18 @@ class Login{
         }
         
     }
+    
+    static function logout(){
+        $_SESSION['proposal_userID'] = '';
+        $_SESSION['proposal_FName'] = '';
+        $_SESSION['proposal_LName'] = '';
+        $_SESSION['proposal_Username'] = '';
+        $_SESSION['proposal_UserLevel'] = '';
+        $_SESSION['proposal_LoggedIn'] = '';
+        FlashBang::addFlashBang("Green", "Logout Successful", "User has been successfully logged out");
+        header("Location:dashboard.php");
+        exit;
+    }
 }
 
 
