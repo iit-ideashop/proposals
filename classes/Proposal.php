@@ -21,6 +21,8 @@ class Proposal {
     private $OwnerID;
     private $status;
     private $dbconn;
+    
+    
     function __construct($proposalID){
         $this->dbconn = new Database();
         $this->dbconn = $this->dbconn->getConnection();
@@ -54,6 +56,10 @@ class Proposal {
                 $this->status = $rows['status'];
             }
         }else{
+            $this->Days = array(0);
+            $this->Semester = 0;
+            $this->ApprovingDean = 0;
+            $this->Disciplines = array();
             $this->OwnerID = $_SESSION['proposal_userID'];
             $this->CourseNumber = 0;
             $this->status = 0;
@@ -294,5 +300,118 @@ class Proposal {
    function setApprovingDean($newDean){
        $this->ApprovingDean = $newDean;
    }
+   
+   function getDisciplines(){
+       return $this->Disciplines;
+   }
+   
+   function setDisciplines($newDisciplines){
+       $this->Disciplines = $newDisciplines;
+   }
+   
+   function getTitle(){
+       return $this->Title;
+   }
+   
+   function setTitle($newTitle){
+       $this->Title;
+   }
+   
+   function getProblem(){
+       return $this->Problem;
+   }
+   
+   function setProblem($newProblem){
+       $this->Problem = $newProblem;
+   }
+   
+   function getObjective(){
+       return $this->Objective;
+   }
+   
+   function setObjective($newObjective){
+       $this->Objective = $newObjective;
+   }
+   
+   function getApproach(){
+       return $this->Approach;
+   }
+   
+   function setApproach($newApproach){
+       $this->Approach = $newApproach;
+   }
+   
+   function getSemester(){
+       return $this->Semester;
+   }
+   
+   function setSemester($newSemester){
+       $this->Semester = $newSemester;
+   }
+   
+   function getDays(){
+       return $this->Days;
+   }
+   
+   function setDays($newDays){
+       $this->Days = $newDays;
+   }
+   
+   function getTime(){
+       return $this->Time;
+   }
+   
+   function setTime($newTime){
+       $this->Time = $newTime;
+   }
+   
+   function getCourseNumber(){
+       return $this->CourseNumber;
+   }
+   
+   function setCourseNumber($newCourseNumber){
+       $this->CourseNumber = $newCourseNumber;
+   }
+   
+   function getOwnerID(){
+       return $this->OwnerID;
+   }
+   
+   function getStatus(){
+       return $this->status;
+   }
+   
+   function setStatus($newStatus){
+       $this->status = $newStatus;
+   }
+   
+   static function convertStatusToText($statusID){
+       $statusText;
+       switch ($statusID){
+           case 0:
+               $statusText = 'Draft';
+               break;
+           case 1:
+               $statusText = 'Denied by Dean';
+               break;
+           case 2:
+               $statusText = 'Sent to Dean';
+               break;
+           case 3:
+               $statusText = 'Denied by Committee';
+               break;
+           case 4:
+               $statusText = 'Sent to Committee';
+               break;
+           case 5:
+               $statusText = 'Approved!';
+               break;
+           default:
+               $statusText = 'Error';
+               break;
+       }
+       return $statusText;
+   }
+   
 }
 ?>
