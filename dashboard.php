@@ -15,35 +15,9 @@ Login::loginCheck(0);
   <script src="js/application.js"></script>
 </head>
 <body>
-
-<header class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <a href="index.html" class="navbar-brand">IPRO Proposals</a>
-    <nav class="pull-right">
-      <a href="approvals.html" class="btn btn-primary navbar-btn">Approvals <span class="badge">10</span></a>
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary navbar-btn dropdown-toggle" data-toggle="dropdown">
-          Dasboard <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="dashboard.html">Proposals</a></li>
-          <li><a href="archive.html">Archive</a></li>
-        </ul>
-      </div>
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary navbar-btn dropdown-toggle" data-toggle="dropdown">
-          User <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="#">Settings</a></li>
-          <li class="divider"></li>
-          <li><a href="#">Logout</a></li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-</header>
-
+<?php
+    include_once('include/nav.php');
+?>
 <div id="dashboard">
   <div class="container jumbotron">
     <div class="title">
@@ -51,7 +25,7 @@ Login::loginCheck(0);
         My Proposals
         <div class="pull-right">
           <a href="archive.html" class="btn btn-default">View Archive</a>
-          <a href="Proposal.php" class="btn btn-success">Create a new proposal</a>
+          <a href="Proposal.php?newFlag=1" class="btn btn-success">Create a new proposal</a>
         </div>
       </h3>
     </div>
