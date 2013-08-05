@@ -7,6 +7,9 @@ if((isset($_POST['saveDraft']))||(isset($_POST['submitForApproval']))){
     if((@$_POST['newFlag'] == 1)||(intval(@$_POST['proposalID']) == 0)){
         $proposal = new Proposal(0);
         $proposal->readProposalfromForm();
+        if(isset($_POST['submitForApproval'])){
+            $proposal->submitForApproval();
+        }
         $proposal->saveToDatabase();
         header("Location:Proposal.php");
         exit;
@@ -14,6 +17,9 @@ if((isset($_POST['saveDraft']))||(isset($_POST['submitForApproval']))){
         //We are saving an existing proposal
         $proposal = new Proposal($_POST['proposalID']);
         $proposal->readProposalfromForm();
+        if(isset($_POST['submitForApproval'])){
+            $proposal->submitForApproval();
+        }
         $proposal->saveToDatabase();
         header("Location:Proposal.php?proposalID=".$_POST['proposalID']);
         exit;
@@ -21,14 +27,24 @@ if((isset($_POST['saveDraft']))||(isset($_POST['submitForApproval']))){
     
 }
 if(isset($_GET['proposalID'])){
-    //We are going to be loading an object from the database based on proposalObj
+    //We are going to be loading an object from the database based on proposalID
     $pageProposal = new Proposal($_GET['proposalID']);//Use this on the rest of the page
+    //For this page we have to verify ownership of the proposal to make sure the user viewing the proposal is actually the one who owns it
+    if($pageProposal->getOwnerID() != $_SESSION['proposal_userID']){
+        FlashBang::addFlashBang("Red", "Unauthorized!", "You must be the owner of a proposal to edit it");
+        header("Location:dashboard.php");
+        exit;
+    }
+    //Next we verify that the proposal is in status 0, if it is not, we are not supposed to be able to edit it
+    if($pageProposal->getStatus() != 0){
+        FlashBang::addFlashBang("Green", "Awaiting Dean Approval", "This proposal has been sent to the dean for approval. Edits are not allowed once the proposal has been submitted.");
+        header("Location:dashboard.php");
+        exit;
+    }
 }else{
+    //We don't have to do any checks for a new proposal...because it is a new proposal.... and this is a dummy object! HAHAHAHAH!
     $pageProposal = new Proposal(0);
 }
-    
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

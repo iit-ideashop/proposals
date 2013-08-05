@@ -413,5 +413,9 @@ class Proposal {
        return $statusText;
    }
    
+   function submitForApproval(){
+       //We are going to set this proposal's status to "sent to dean"
+       $this->status = 2;
+   }
 }
 ?>
