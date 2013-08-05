@@ -29,8 +29,38 @@ Login::loginCheck(0);
         </div>
       </h3>
     </div>
+      <?php
+      //Let's get the "My Proposal" array!
+        $proposalArray = Proposal::getMyProposals();
+      ?>
     <ul id="proposal-list">
-      <li class="proposal-item row">
+       <?php
+       for($i=0;$i<count($proposalArray);$i++){
+           echo '<li class="proposal-item row">
+                    <div class="col-lg-7">
+                        <a href="#"><span>'.$proposalArray[$i]->getTitle().'</span></a>
+                    </div>
+                    <div class="col-lg-3 text-center">
+                        <span class="label '.Proposal::convertStatusToClassColor($proposalArray[$i]->getStatus()).'">'.Proposal::convertStatusToText($proposalArray[$i]->getStatus()).'</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="btn-group btn-block">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            Actions <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Edit</a></li>
+                                <li><a href="#">View</a></li>
+                                <li><a href="#">Submit</a></li>
+                                <li><a href="#">Archive</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>';
+       }
+       ?>
+      <!-- Proposal item prototypes
+        <li class="proposal-item row">
         <div class="col-lg-7">
           <a href="#"><span>Project Title</span></a>
         </div>
@@ -51,6 +81,8 @@ Login::loginCheck(0);
           </div>
         </div>
       </li>
+      
+      
       <li class="proposal-item row">
         <div class="col-lg-7">
           <a href="#"><span>Project Title</span></a>
@@ -201,7 +233,7 @@ Login::loginCheck(0);
     </ul>
   </div>
 </div>
-
+-->
 </body>
 </html>
 
