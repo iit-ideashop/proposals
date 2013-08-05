@@ -1,5 +1,6 @@
 <?php 
 session_start();
+$header_loaded = true;
 include_once('classes/Database.php');
 include_once('classes/FlashBang.php');
 include_once('classes/Login.php');
