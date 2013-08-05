@@ -66,6 +66,22 @@ class Proposal {
         }
         
     }
+    static function getMyProposals(){
+        //This function returns an array of proposal objects which can be used in a variety of ways....
+        $dbconnlocal = new Database();
+        $dbconnlocal = $dbconnlocal->getConnection();
+        $sql ="SELECT id FROM proposals WHERE OwnerID='".intval($_SESSION['proposal_userID'])."'";
+        $result = $dbconnlocal->query($sql);
+        $proposalArray = array();
+        while($row = $result->fetch_assoc()){
+            //into a temporary object and then into the array
+            $tempPropObj = new Proposal($row['id']);
+            array_push($proposalArray, $tempPropObj);
+            $tempPropObj = null;
+        }
+        return $proposalArray;
+    }
+    
     
     static function generateDisciplinesCheckboxes($checkedArray){
         //This function will generate checkboxes for the disciplines in the database.
@@ -411,6 +427,34 @@ class Proposal {
                break;
        }
        return $statusText;
+   }
+   
+   static function convertStatusToClassColor($statusID){
+       $statusClass;
+       switch ($statusID){
+           case 0:
+               $statusClass = 'label-1';
+               break;
+           case 1:
+               $statusClass = 'label-3';
+               break;
+           case 2:
+               $statusClass = 'label-2';
+               break;
+           case 3:
+               $statusClass = 'label-3';
+               break;
+           case 4:
+               $statusClass = 'label-2';
+               break;
+           case 5:
+               $statusClass = 'label-7';
+               break;
+           default:
+               $statusClass = 'label-0';
+               break;
+       }
+       return $statusClass;
    }
    
    function submitForApproval(){
