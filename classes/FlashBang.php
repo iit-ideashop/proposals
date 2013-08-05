@@ -6,12 +6,12 @@ class FlashBang{
         $_SESSION['proposal_flashbang_color'] = $color;
         $_SESSION['proposal_flashbang_header'] = $header;
         $_SESSION['proposal_flashbang_message'] = $message;
-        $_SESSION['proposal_flashbang_exists'] = true;
+        $_SESSION['proposal_flashbang_exists'] = 1;
     }
     
     static function getFlashBang(){
         //Reads if there is a flash bang
-        if(@$_SESSION['proposal_flashbang_exists'] == true){
+        if(@$_SESSION['proposal_flashbang_exists'] === 1){
             //HTML code for a flashbang
             $alertClass;
             switch($_SESSION['proposal_flashbang_color']){
@@ -29,7 +29,10 @@ class FlashBang{
                     break;
             }
             $codeBlock = '<div class="alert '.$alertClass.'"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>'.$_SESSION['proposal_flashbang_header'].'</h4>'.$_SESSION['proposal_flashbang_message'].'</div>';
-            $_SESSION['proposal_flashbag_exists'] = false;
+            $_SESSION['proposal_flashbang_exists'] = 0;
+            $_SESSION['proposal_flashbang_color'] = '';
+            $_SESSION['proposal_flashbang_header'] = '';
+            $_SESSION['proposal_flashbang_message'] = '';
             return $codeBlock;
             
         }else{
