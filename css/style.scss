@@ -89,6 +89,17 @@ h3 {
   }
 }
 
+#show-proposal {
+  h5 {
+    margin-top: 2em;
+    font-weight: bold;
+    border-bottom: 1px solid grey;
+  }
+  p {
+    font-size: 0.75em;
+  }
+}
+
 #proposal-list {
   list-style: none;
   padding-left: 0;
