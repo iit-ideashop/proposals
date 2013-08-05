@@ -6,6 +6,12 @@ if(isset($_POST['submit'])){
     $loginObj = new Login();
     $loginObj->authenticate($_POST['username'], $_POST['password']);
 }
+//Let's check to see if the user is already authenticated
+if(@$_SESSION['proposal_LoggedIn'] == 1){
+    header("Location:dashboard.php");
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en  ">
@@ -21,15 +27,9 @@ if(isset($_POST['submit'])){
 </head>
 <body>
 
-<header class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <a href="index.html" class="navbar-brand">IPRO Proposals</a>
-    <nav class="pull-right">
-      <a href="http://ipro.iit.edu/" target="_blank" class="btn btn-danger navbar-btn">Visit IPRO Homepage</a>
-      <a href="index.html" class="btn btn-primary navbar-btn">Login</a>
-    </nav>
-  </div>
-</header>
+<?php
+include_once('include/nav.php');
+?>
 
 <div id="main-focus-area">
   <div class="container jumbotron">
