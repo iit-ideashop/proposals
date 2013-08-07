@@ -51,6 +51,8 @@ h3 {
   border-bottom: 1px solid grey; }
 #show-proposal p {
   font-size: 0.75em; }
+#show-proposal .ipro-details {
+  background-color: #cccccc; }
 
 #proposal-list {
   list-style: none;
