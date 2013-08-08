@@ -70,12 +70,12 @@ class Proposal {
         //This function returns an array of proposal objects which can be used in a variety of ways....
         $dbconnlocal = new Database();
         $dbconnlocal = $dbconnlocal->getConnection();
-        $sql ="SELECT id FROM proposals WHERE OwnerID='".intval($_SESSION['proposal_userID'])."'";
+        $sql ="SELECT ID FROM proposals WHERE OwnerID='".intval($_SESSION['proposal_userID'])."'";
         $result = $dbconnlocal->query($sql);
         $proposalArray = array();
         while($row = $result->fetch_assoc()){
             //into a temporary object and then into the array
-            $tempPropObj = new Proposal($row['id']);
+            $tempPropObj = new Proposal($row['ID']);
             array_push($proposalArray, $tempPropObj);
             $tempPropObj = null;
         }
@@ -141,7 +141,7 @@ class Proposal {
     function readDayfromForm(){
         //This is going to be really simple, we have to return the day array in the form OF 0-4 being MON-FRI
         $dayArray = array();
-        for($i=0;$i<4;$i++){
+        for($i=0;$i<=4;$i++){
             if(isset($_POST['day-'.$i])){
                 if($_POST['day-'.$i] == 'on'){
                     array_push($dayArray,$i);
@@ -176,7 +176,7 @@ class Proposal {
    }
    
    function saveToDatabase(){
-       if($this->ID == 0){
+       if($this->ID === 0){
            //New Proposal
            //Step 1, figure out the proposal ID for this new proposal
            $proposalIDSql = "SHOW TABLE STATUS LIKE 'proposals_control'";
@@ -215,8 +215,8 @@ class Proposal {
                Time='".$this->Time."',
                CourseNumber='".$this->CourseNumber."',
                OwnerID='".$this->OwnerID."',
-               status='".$this->status."',
-";
+               status='".$this->status."' WHERE ID='".$this->ID."' LIMIT 1";
+           $query = $this->dbconn->query($sql);
        }
    }
    
@@ -269,6 +269,10 @@ class Proposal {
    }
    
    //getters and setters
+   function getID(){
+       return $this->ID;
+   }
+   
    function getInstructor(){
        return $this->Instructor;
    }
@@ -460,6 +464,53 @@ class Proposal {
    function submitForApproval(){
        //We are going to set this proposal's status to "sent to dean"
        $this->status = 2;
+   }
+   
+   function getDeanName(){
+       $deanID = $this->ApprovingDean;
+       if(intval($deanID) != 0){
+           $sql = "SELECT deanName FROM deans WHERE id='".intval($deanID)."'";
+           $result = $this->dbconn->query($sql);
+           $row = $result->fetch_assoc();
+           return $row['deanName'];
+       }else{
+           return 'Error';
+       }
+   }
+   
+   function getDeanEmail(){
+       $deanID = $this->ApprovingDean;
+       if(intval($deanID) != 0){
+           $sql = "SELECT deanEmail FROM deans WHERE id='".intval($deanID)."'";
+           $result = $this->dbconn->query($sql);
+           $row = $result->fetch_assoc();
+           return $row['deanEmail'];
+       }else{
+           return 'Error';
+       }
+   }
+   
+   function displayTargetedMajors(){
+       $sql = "SELECT * FROM disciplines";
+       $result = $this->dbconn->query($sql);
+       $output ='';
+       $disciplinesArray = array();
+       while($rows = $result->fetch_assoc()){
+           $disciplinesArray[$rows['id']] = $rows['disciplineName'];
+       }
+       for($i=0;$i<count($this->Disciplines);$i++){
+           echo $disciplinesArray[$this->Disciplines[$i]].' ';
+       }
+       return $output;
+   }
+   
+   function displayDays(){
+       $dayArray = array('M','T','W','Th','F');
+       $output ='';
+       for($i=0;$i<count($this->Days);$i++){
+           $output .= $dayArray[$this->Days[$i]].' ';
+       }
+       return $output;
    }
 }
 ?>

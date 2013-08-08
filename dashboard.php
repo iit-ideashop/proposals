@@ -49,8 +49,8 @@ Login::loginCheck(0);
                             Actions <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Edit</a></li>
-                                <li><a href="#">View</a></li>
+                                <li><a href="Proposal.php?proposalID='.$proposalArray[$i]->getID().'">Edit</a></li>
+                                <li><a href="showProposal.php?proposalID='.$proposalArray[$i]->getID().'">View</a></li>
                                 <li><a href="#">Submit</a></li>
                                 <li><a href="#">Archive</a></li>
                             </ul>

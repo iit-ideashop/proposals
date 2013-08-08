@@ -18,7 +18,7 @@ if((isset($_POST['saveDraft']))||(isset($_POST['submitForApproval']))){
         $proposal = new Proposal($_POST['proposalID']);
         $proposal->readProposalfromForm();
         if(isset($_POST['submitForApproval'])){
-            $proposal->submitForApproval();
+            $proposal->submitForApproval();  
         }
         $proposal->saveToDatabase();
         header("Location:Proposal.php?proposalID=".$_POST['proposalID']);
