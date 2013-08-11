@@ -1,15 +1,19 @@
 <?php
 //database object, creates a database connection
 class Database{
-    private $database_conn;
+    private static $database_conn;
+    private static $databaseConnected = false;
     function __construct(){
-        //create the connection
-        include('config/database_config.php');
-        $this->database_conn = new mysqli($database_location,$database_username,$database_password,$database_name);
+        if(!self::$databaseConnected){
+            //create the connection
+            include('config/database_config.php');
+            self::$database_conn = new mysqli($database_location,$database_username,$database_password,$database_name);
+            self::$databaseConnected = true;
+            }
     }
     
     public function getConnection(){
-        return $this->database_conn;
+        return self::$database_conn;
     }
     
     public static function sterilizeInt($int){
