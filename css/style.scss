@@ -56,8 +56,35 @@ h3 {
   background-color: darkgreen;
 }
 
+
 .title {
   margin-bottom: 1em;
+}
+
+
+.progress-1 {
+  background-color: gray;
+  width: 10%;
+}
+
+.progress-2 {
+  background-color: steelblue;
+  width: 37%;
+}
+
+.progress-3 {
+  background-color: steelblue;
+  width: 63%;
+}
+
+.progress-4 {
+  background-color: steelblue;
+  width: 88%;
+}
+
+.progress-full {
+  background-color: darkgreen;
+  width: 100%;
 }
 
 
@@ -88,15 +115,16 @@ h3 {
   label {
     font-size: 0.75em;
   }
-  .breadcrumb {
-    font-size: .75em;
-    .active {
-      color: $text-black;
-    }
-    li {
-      color: lighten($text-black, 60);
-    }
-  }
+  //.breadcrumb {
+  //  background-color: lighten(gray, 40);
+  //  font-size: 1.25em;
+  //  .active {
+  //    color: $text-black;
+  //  }
+  //  li {
+  //    color: lighten($text-black, 50);
+  //  }
+  //}
 }
 
 #show-proposal {
@@ -140,5 +168,14 @@ h3 {
     &:active {
       background-color: lighten(black, 40);
     }
+  }
+}
+
+#proposal-progress {
+  font-size: .7em;
+  border-bottom: 1px solid lighten(black, 75);
+  color: lighten($text-black, 55);
+  .current-status {
+    color: $text-black;
   }
 }

@@ -63,15 +63,49 @@ if(isset($_GET['proposalID'])){
 include_once('include/nav.php');
 ?>
 <div id="new-proposal">
+
+<!--  <div class="container proposal-progress">-->
+<!--    <ul class="breadcrumb">-->
+<!--      <li class="active">Proposal Development</li>-->
+<!--      <li>Dean Review</li>-->
+<!--      <li>IPRO Committee Review</li>-->
+<!--      <li>Scheduling and Contracting</li>-->
+<!--    </ul>-->
+<!--  </div>-->
+
   <div class="container jumbotron">
 
-    <div class="proposal-progress">
-      <ul class="breadcrumb">
-        <li class="active">Proposal Development</li>
-        <li>Dean Review</li>
-        <li>IPRO Committee Review</li>
-        <li>Scheduling and Contracting</li>
-      </ul>
+    <div id="proposal-progress">
+
+      <div class="row text-center">
+        <div class="col-lg-3 current-status">
+          Proposal Development
+        </div>
+        <div class="col-lg-3">
+          Dean Review
+        </div>
+        <div class="col-lg-3">
+          IPRO Committee Review
+        </div>
+        <div class="col-lg-3">
+          Scheduling and Contracting
+        </div>
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-1"></div>
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-2"></div>
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-3"></div>
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-4"></div>
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-full"></div>
+      </div>
     </div>
 
     <div class="title">
