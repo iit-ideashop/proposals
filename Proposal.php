@@ -64,7 +64,22 @@ include_once('include/nav.php');
 ?>
 <div id="new-proposal">
   <div class="container jumbotron">
+
+    <div class="proposal-progress">
+      <ul class="breadcrumb">
+        <li class="active">Proposal Development</li>
+        <li>Dean Review</li>
+        <li>IPRO Committee Review</li>
+        <li>Scheduling and Contracting</li>
+      </ul>
+    </div>
+
     <div class="title">
+      <div class="pull-right">
+         <a href="dashboard.php" class="btn btn-danger">Cancel</a>
+         <input type="submit" name="submitForApproval" class="btn btn-primary" value="Submit for Approval">
+         <input type="submit" name="saveDraft" class="btn btn-success" value="Save as Draft">
+      </div>
       <h3>
         <?php
         if(@$_GET['newFlag'] == 1){
@@ -85,15 +100,12 @@ include_once('include/nav.php');
                     echo '<input type="hidden" name="proposalID" value="'.$_GET['proposalID'].'">';
                 }
             ?>
-        <div class="pull-right">
-          <a href="dashboard.php" class="btn btn-danger">Cancel</a>
-          <input type="submit" name="submitForApproval" class="btn btn-primary" value="Submit for Approval">
-          <input type="submit" name="saveDraft" class="btn btn-success" value="Save as Draft">
-        </div>
       </h3>
     </div>
+
     <div class="row">
-      
+
+        <!-- Proposal Details -->
         <div class="col-lg-6">
           <div class="form-group">
             <label>Title</label>
@@ -111,57 +123,16 @@ include_once('include/nav.php');
             <label>Approach</label>
             <textarea class="form-control" rows="6" name="approach" placeholder="What approach will the team take?"><?php echo $pageProposal->getApproach(); ?></textarea>
           </div>
-          <div class="form-group">
-            <label>Class Information</label>
-            <div>
-              <label class="checkbox-inline">
-                  <input type="checkbox" name="day-0" <?php if(array_key_exists(0,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>M
-              </label>
-              <label class="checkbox-inline">
-                  <input type="checkbox" name="day-1" <?php if(array_key_exists(1,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>T
-              </label>
-              <label class="checkbox-inline">
-                  <input type="checkbox" name="day-2" <?php if(array_key_exists(2,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>W
-              </label>
-              <label class="checkbox-inline">
-                  <input type="checkbox" name="day-3" <?php if(array_key_exists(3,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>Th
-              </label>
-              <label class="checkbox-inline">
-                  <input type="checkbox" name="day-4" <?php if(array_key_exists(4,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>F
-              </label>
-                
-            </div>
-            <div>
-              <label class="radio-inline">
-                  <input type="radio" name="time" value="Morning" <?php if($pageProposal->getTime() == "Morning"){ echo 'checked="checked"'; } ?>>Morning
-              </label>
-              <label class="radio-inline">
-                <input type="radio" name="time" value="Afternoon" <?php if($pageProposal->getTime() == "Afternoon"){ echo 'checked="checked"'; } ?>>Afternoon
-              </label>
-              <label class="radio-inline">
-                <input type="radio" name="time" value="Evening" <?php if($pageProposal->getTime() == "Evening"){ echo 'checked="checked"'; } ?>>Evening
-              </label>
-            </div>
-            <div class="form-group">
-              <label>Available Semesters</label>
-              <?php echo Proposal::generateNextSemesterDropdown($pageProposal->getSemester()); ?>
-              <!-- Semester dropdown prototype
-              <select class="form-control">
-                <option>Option1</option>
-                <option>Option2</option>
-                <option>Option3</option>
-              </select>
-              -->
-            </div>
-          </div>
         </div>
+
+        <!-- Instructor and Scheduling -->
         <div class="col-lg-6">
           <div class="form-group">
             <label>Primary Instructor Information</label>
             <input type="text" class="form-control" name="instructorName" placeholder="Instructor Name" value="<?php echo $pageProposal->getInstructor(); ?>">
           </div>
           <div class="form-group">
-              <input type="email" class="form-control" name="instructorEmail" placeholder="Instructor Email" value="<?php echo $pageProposal->getInstructorEmail(); ?>">
+            <input type="email" class="form-control" name="instructorEmail" placeholder="Instructor Email" value="<?php echo $pageProposal->getInstructorEmail(); ?>">
           </div>
           <div class="form-group">
             <label>Co-Instructor Information</label>
@@ -173,30 +144,48 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>College Dean</label>
             <?php echo Proposal::generateDeanDropdown($pageProposal->getApprovingDean()); ?>
-            <!--  Dean Dropdown Prototype
-            <select class="form-control">
-              <option>Dean1</option>
-              <option>Dean2</option>
-              <option>Dean3</option>
-            </select>
-            -->
           </div>
           <div class="form-group">
             <label>Sponsor Information</label>
             <input type="text" class="form-control" name="sponsor" placeholder="Sponsor" value="<?php echo $pageProposal->getSponsor(); ?>">
           </div>
-          
+
           <div class="form-group">
-            <label>Targeted Disciplines</label>
+            <label>Class Timing (we will try our best to accommodate)</label>
             <div>
-                <?php echo Proposal::generateDisciplinesCheckboxes($pageProposal->getDisciplines()); ?>
-              <!-- Checkbox Prototype
-                <label class="checkbox-inline">
-                <input type="checkbox" name="" value="Discipline1"> Discipline 1
+              <label class="checkbox-inline">
+                <input type="checkbox" name="day-0" <?php if(array_key_exists(0,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>M
               </label>
-              -->
+              <label class="checkbox-inline">
+                <input type="checkbox" name="day-1" <?php if(array_key_exists(1,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>T
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="day-2" <?php if(array_key_exists(2,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>W
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="day-3" <?php if(array_key_exists(3,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>Th
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="day-4" <?php if(array_key_exists(4,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>F
+              </label>
+            </div>
+            <div>
+              <label class="radio-inline">
+                <input type="radio" name="time" value="Morning" <?php if($pageProposal->getTime() == "Morning"){ echo 'checked="checked"'; } ?>>Morning
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="time" value="Afternoon" <?php if($pageProposal->getTime() == "Afternoon"){ echo 'checked="checked"'; } ?>>Afternoon
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="time" value="Evening" <?php if($pageProposal->getTime() == "Evening"){ echo 'checked="checked"'; } ?>>Evening
+              </label>
+            </div>
+            <div class="form-group">
+                <label>Available Semesters</label>
+                <?php echo Proposal::generateNextSemesterDropdown($pageProposal->getSemester()); ?>
             </div>
           </div>
+
         </div>
       </form>
     </div>

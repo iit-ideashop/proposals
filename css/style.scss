@@ -1,4 +1,5 @@
 
+$text-black: #333;
 
 body {
   padding-top: 70px;
@@ -86,6 +87,15 @@ h3 {
   }
   label {
     font-size: 0.75em;
+  }
+  .breadcrumb {
+    font-size: .75em;
+    .active {
+      color: $text-black;
+    }
+    li {
+      color: lighten($text-black, 60);
+    }
   }
 }
 

@@ -44,6 +44,12 @@ h3 {
   margin-bottom: 1em; }
 #new-proposal label {
   font-size: 0.75em; }
+#new-proposal .breadcrumb {
+  font-size: .75em; }
+  #new-proposal .breadcrumb .active {
+    color: #333333; }
+  #new-proposal .breadcrumb li {
+    color: #cccccc; }
 
 #show-proposal h5 {
   margin-top: 2em;
