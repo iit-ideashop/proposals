@@ -84,6 +84,8 @@ h3 {
     #proposal-list .proposal-item .btn {
       margin-top: 0.5em;
       margin-bottom: 0.5em; }
+    #proposal-list .proposal-item .label {
+      margin-right: 1em; }
     #proposal-list .proposal-item a {
       text-decoration: none;
       color: #333; }

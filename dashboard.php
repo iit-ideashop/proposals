@@ -40,13 +40,11 @@ Login::loginCheck(0);
                     <div class="col-lg-7">
                         <a href="#"><span>'.$proposalArray[$i]->getTitle().'</span></a>
                     </div>
-                    <div class="col-lg-3 text-right">
+                    <div class="col-lg-5 text-right">
                         <span class="label '.Proposal::convertStatusToClassColor($proposalArray[$i]->getStatus()).'">'.Proposal::convertStatusToText($proposalArray[$i]->getStatus()).'</span>
-                    </div>
-                    <div class="col-lg-2 text-right">
-                        <div class="btn-group btn-block">
-                            <button type="button" class="btn btn-default dropdown-toggle text-right" data-toggle="dropdown">
-                            Actions <span class="caret"></span>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                              Actions <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a href="Proposal.php?proposalID='.$proposalArray[$i]->getID().'">Edit</a></li>
