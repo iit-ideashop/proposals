@@ -28,7 +28,7 @@ class FlashBang{
                     $alertClass = "alert-info";
                     break;
             }
-            $codeBlock = '<div class="alert '.$alertClass.'"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>'.$_SESSION['proposal_flashbang_header'].'</h4>'.$_SESSION['proposal_flashbang_message'].'</div>';
+            $codeBlock = '<div class="container alert '.$alertClass.'"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>'.$_SESSION['proposal_flashbang_header'].'</h4>'.$_SESSION['proposal_flashbang_message'].'</div>';
             $_SESSION['proposal_flashbang_exists'] = 0;
             $_SESSION['proposal_flashbang_color'] = '';
             $_SESSION['proposal_flashbang_header'] = '';
