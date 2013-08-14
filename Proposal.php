@@ -51,6 +51,7 @@ if(isset($_GET['proposalID'])){
 <head>
   <title>IPRO Proposals</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="css/bootstrap-glyphicons.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -136,19 +137,31 @@ include_once('include/nav.php');
         <!-- Proposal Details -->
         <div class="col-lg-6">
           <div class="form-group">
-            <label>Title</label>
+            <label>
+              Title
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </label>
             <input type="text" class="form-control" name="projectTitle" placeholder="IPRO Project Title" value="<?php echo $pageProposal->getTitle() ?>">
           </div>
           <div class="form-group">
-            <label>Problem or Issue</label>
+            <label>
+              Problem or Issue
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </label>
             <textarea class="form-control" rows="6" name="problem" placeholder="What problems will the IPRO Address?"><?php echo $pageProposal->getProblem(); ?></textarea>
           </div>
           <div class="form-group">
-            <label>Objective</label>
+            <label>
+              Objective
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </label>
             <textarea class="form-control" rows="6" name="objectives" placeholder="What objectives will be achieved?"><?php echo $pageProposal->getObjective(); ?></textarea>
           </div>
           <div class="form-group">
-            <label>Approach</label>
+            <label>
+              Approach
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </label>
             <textarea class="form-control" rows="6" name="approach" placeholder="What approach will the team take?"><?php echo $pageProposal->getApproach(); ?></textarea>
           </div>
         </div>
@@ -156,30 +169,45 @@ include_once('include/nav.php');
         <!-- Instructor and Scheduling -->
         <div class="col-lg-6">
           <div class="form-group">
-            <label>Primary Instructor Information</label>
+            <label>
+              Primary Instructor Information
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </label>
             <input type="text" class="form-control" name="instructorName" placeholder="Instructor Name" value="<?php echo $pageProposal->getInstructor(); ?>">
           </div>
           <div class="form-group">
             <input type="email" class="form-control" name="instructorEmail" placeholder="Instructor Email" value="<?php echo $pageProposal->getInstructorEmail(); ?>">
           </div>
           <div class="form-group">
-            <label>Co-Instructor Information</label>
+            <label>
+              Co-Instructor Information
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </label>
             <input type="text" class="form-control" name="coInstructorName" placeholder="Co-Instructor Name" value="<?php echo $pageProposal->getCoInstructor(); ?>">
           </div>
           <div class="form-group">
             <input type="email" class="form-control" name="coInstructorEmail" placeholder="Co-Instructor Email" value="<?php echo $pageProposal->getInstructorEmail(); ?>">
           </div>
           <div class="form-group">
-            <label>College Dean</label>
+            <label>
+              College Dean
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </label>
             <?php echo Proposal::generateDeanDropdown($pageProposal->getApprovingDean()); ?>
           </div>
           <div class="form-group">
-            <label>Sponsor Information</label>
+            <label>
+              Sponsor Information
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </label>
             <input type="text" class="form-control" name="sponsor" placeholder="Sponsor" value="<?php echo $pageProposal->getSponsor(); ?>">
           </div>
 
           <div class="form-group">
-            <label>Class Timing (we will try our best to accommodate)</label>
+            <label>
+              Class Timing (we will try our best to accommodate)
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </label>
             <div>
               <label class="checkbox-inline">
                 <input type="checkbox" name="day-0" <?php if(array_key_exists(0,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>M
@@ -209,8 +237,11 @@ include_once('include/nav.php');
               </label>
             </div>
             <div class="form-group">
-                <label>Available Semesters</label>
-                <?php echo Proposal::generateNextSemesterDropdown($pageProposal->getSemester()); ?>
+              <label>
+                Available Semesters
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </label>
+              <?php echo Proposal::generateNextSemesterDropdown($pageProposal->getSemester()); ?>
             </div>
           </div>
 
