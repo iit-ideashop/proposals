@@ -64,15 +64,6 @@ include_once('include/nav.php');
 ?>
 <div id="new-proposal">
 
-<!--  <div class="container proposal-progress">-->
-<!--    <ul class="breadcrumb">-->
-<!--      <li class="active">Proposal Development</li>-->
-<!--      <li>Dean Review</li>-->
-<!--      <li>IPRO Committee Review</li>-->
-<!--      <li>Scheduling and Contracting</li>-->
-<!--    </ul>-->
-<!--  </div>-->
-
   <div class="container jumbotron">
 
     <div id="proposal-progress">
