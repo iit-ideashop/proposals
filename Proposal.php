@@ -83,7 +83,7 @@ include_once('include/nav.php');
           Scheduling/Contracting
         </div>
         <div class="col-lg-2">
-          IPRO Accepted!
+          IPRO Approved!
         </div>
       </div>
       <div class="progress">
