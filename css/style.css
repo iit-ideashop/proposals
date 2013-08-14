@@ -37,19 +37,19 @@ h3 {
 
 .progress-1 {
   background-color: gray;
-  width: 10%; }
+  width: 15%; }
 
 .progress-2 {
   background-color: steelblue;
-  width: 37%; }
+  width: 33%; }
 
 .progress-3 {
   background-color: steelblue;
-  width: 63%; }
+  width: 50%; }
 
 .progress-4 {
   background-color: steelblue;
-  width: 88%; }
+  width: 67%; }
 
 .progress-full {
   background-color: darkgreen;
@@ -99,7 +99,8 @@ h3 {
       background-color: #666666; }
 
 #proposal-progress {
-  font-size: .7em;
+  font-size: .6em;
+  font-weight: bold;
   border-bottom: 1px solid #bfbfbf;
   color: #bfbfbf; }
   #proposal-progress .current-status {

@@ -64,22 +64,22 @@ h3 {
 
 .progress-1 {
   background-color: gray;
-  width: 10%;
+  width: 15%;
 }
 
 .progress-2 {
   background-color: steelblue;
-  width: 37%;
+  width: 33%;
 }
 
 .progress-3 {
   background-color: steelblue;
-  width: 63%;
+  width: 50%;
 }
 
 .progress-4 {
   background-color: steelblue;
-  width: 88%;
+  width: 67%;
 }
 
 .progress-full {
@@ -115,16 +115,6 @@ h3 {
   label {
     font-size: 0.75em;
   }
-  //.breadcrumb {
-  //  background-color: lighten(gray, 40);
-  //  font-size: 1.25em;
-  //  .active {
-  //    color: $text-black;
-  //  }
-  //  li {
-  //    color: lighten($text-black, 50);
-  //  }
-  //}
 }
 
 #show-proposal {
@@ -175,7 +165,8 @@ h3 {
 }
 
 #proposal-progress {
-  font-size: .7em;
+  font-size: .6em;
+  font-weight: bold;
   border-bottom: 1px solid lighten(black, 75);
   color: lighten($text-black, 55);
   .current-status {

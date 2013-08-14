@@ -78,17 +78,20 @@ include_once('include/nav.php');
     <div id="proposal-progress">
 
       <div class="row text-center">
-        <div class="col-lg-3 current-status">
+        <div class="col-lg-2 col-offset-1 current-status">
           Proposal Development
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-2">
           Dean Review
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-2">
           IPRO Committee Review
         </div>
-        <div class="col-lg-3">
-          Scheduling and Contracting
+        <div class="col-lg-2">
+          Scheduling/Contracting
+        </div>
+        <div class="col-lg-2">
+          IPRO Accepted!
         </div>
       </div>
       <div class="progress">
