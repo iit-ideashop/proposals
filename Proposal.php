@@ -205,8 +205,9 @@ include_once('include/nav.php');
 
           <div class="form-group">
             <label>
-              Class Timing (we will try our best to accommodate)
+              Class Timing
               <span class="glyphicon glyphicon-info-sign"></span>
+              <span class="help-text">(we will try our best to accommodate)</span>
             </label>
             <div>
               <label class="checkbox-inline">
