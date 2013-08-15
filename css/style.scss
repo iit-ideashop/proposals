@@ -63,26 +63,31 @@ h3 {
 
 
 .progress-1 {
+  // Proposal development
   background-color: gray;
   width: 15%;
 }
 
 .progress-2 {
+  // Dean review
   background-color: steelblue;
   width: 33%;
 }
 
 .progress-3 {
+  // IPRO committee review
   background-color: steelblue;
   width: 50%;
 }
 
 .progress-4 {
+  // Scheduling/contracting
   background-color: steelblue;
   width: 67%;
 }
 
 .progress-full {
+  // IPRO approved
   background-color: darkgreen;
   width: 100%;
 }
