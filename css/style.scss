@@ -124,6 +124,9 @@ h3 {
   label {
     font-size: 0.75em;
   }
+  a {
+    text-decoration: none;
+  }
 }
 
 #show-proposal {
@@ -180,5 +183,16 @@ h3 {
   color: lighten($text-black, 55);
   .current-status {
     color: $text-black;
+  }
+}
+
+#faq {
+  h3 {
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 1.5em;
+  }
+  p {
+    font-size: .75em;
   }
 }

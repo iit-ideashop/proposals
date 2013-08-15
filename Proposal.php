@@ -139,28 +139,36 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Title
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <a href="faq.html#title" target="_blank">
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
             </label>
             <input type="text" class="form-control" name="projectTitle" placeholder="IPRO Project Title" value="<?php echo $pageProposal->getTitle() ?>">
           </div>
           <div class="form-group">
             <label>
               Problem or Issue
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <a href="faq.html#problem-issue">
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
             </label>
             <textarea class="form-control" rows="6" name="problem" placeholder="What problems will the IPRO Address?"><?php echo $pageProposal->getProblem(); ?></textarea>
           </div>
           <div class="form-group">
             <label>
               Objective
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <a href="faq.html#objective">
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
             </label>
             <textarea class="form-control" rows="6" name="objectives" placeholder="What objectives will be achieved?"><?php echo $pageProposal->getObjective(); ?></textarea>
           </div>
           <div class="form-group">
             <label>
               Approach
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <a href="faq.html#approach">
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
             </label>
             <textarea class="form-control" rows="6" name="approach" placeholder="What approach will the team take?"><?php echo $pageProposal->getApproach(); ?></textarea>
           </div>
@@ -171,7 +179,9 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Primary Instructor Information
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <a href="faq.html#primary-instructor">
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
             </label>
             <input type="text" class="form-control" name="instructorName" placeholder="Instructor Name" value="<?php echo $pageProposal->getInstructor(); ?>">
           </div>
@@ -181,7 +191,9 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Co-Instructor Information
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <a href="faq.html#co-instructor">
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
             </label>
             <input type="text" class="form-control" name="coInstructorName" placeholder="Co-Instructor Name" value="<?php echo $pageProposal->getCoInstructor(); ?>">
           </div>
@@ -191,14 +203,18 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               College Dean
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <a href="faq.html#dean">
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
             </label>
             <?php echo Proposal::generateDeanDropdown($pageProposal->getApprovingDean()); ?>
           </div>
           <div class="form-group">
             <label>
               Sponsor Information
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <a href="faq.html#sponsor">
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
             </label>
             <input type="text" class="form-control" name="sponsor" placeholder="Sponsor" value="<?php echo $pageProposal->getSponsor(); ?>">
           </div>
@@ -206,7 +222,9 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Class Timing
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <a href="faq.html#timing">
+                <span class="glyphicon glyphicon-info-sign"></span>
+              </a>
               <span class="help-text">(we will try our best to accommodate)</span>
             </label>
             <div>
@@ -240,7 +258,9 @@ include_once('include/nav.php');
             <div class="form-group">
               <label>
                 Available Semesters
-                <span class="glyphicon glyphicon-info-sign"></span>
+                <a href="faq.html#semesters">
+                  <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
               </label>
               <?php echo Proposal::generateNextSemesterDropdown($pageProposal->getSemester()); ?>
             </div>
