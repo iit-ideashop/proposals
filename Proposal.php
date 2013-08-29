@@ -11,7 +11,7 @@ if((isset($_POST['saveDraft']))||(isset($_POST['submitForApproval']))){
             $proposal->submitForApproval();
         }
         $proposal->saveToDatabase();
-        header("Location:Proposal.php");
+        header("Location:Proposal.php?proposalID=".$proposal->getID());
         exit;
     }else{
         //We are saving an existing proposal
@@ -66,43 +66,8 @@ include_once('include/nav.php');
 <div id="new-proposal">
 
   <div class="container jumbotron">
-
-    <div id="proposal-progress">
-
-      <div class="row text-center">
-        <div class="col-lg-2 col-offset-1 current-status">
-          Proposal Development
-        </div>
-        <div class="col-lg-2">
-          Dean Review
-        </div>
-        <div class="col-lg-2">
-          IPRO Committee Review
-        </div>
-        <div class="col-lg-2">
-          Scheduling/Contracting
-        </div>
-        <div class="col-lg-2">
-          IPRO Approved!
-        </div>
-      </div>
-      <div class="progress">
-        <div class="progress-bar progress-1"></div>
-      </div>
-      <div class="progress">
-        <div class="progress-bar progress-2"></div>
-      </div>
-      <div class="progress">
-        <div class="progress-bar progress-3"></div>
-      </div>
-      <div class="progress">
-        <div class="progress-bar progress-4"></div>
-      </div>
-      <div class="progress">
-        <div class="progress-bar progress-full"></div>
-      </div>
-    </div>
-
+      <?php echo Proposal::convertStatusToProgressBox($pageProposal->getStatus()) ?>
+<form action="" method="POST">
     <div class="title">
       <div class="pull-right">
          <a href="dashboard.php" class="btn btn-danger">Cancel</a>
@@ -118,15 +83,19 @@ include_once('include/nav.php');
         }
         ?>
         Proposal Application
-        <form action="" method="POST">
+        
             <?php
                 //here we will use hidden form fields to get data
                 if(@$_GET['newFlag'] == 1){
                     //We have a new proposal being generated
                     echo '<input type="hidden" name="newFlag" value="1">';
-                }
-                if((isset($_GET['proposalID']))&&(intval(@$_GET['proposalID']) != 0)){
+                }elseif((isset($_GET['proposalID']))&&(intval(@$_GET['proposalID']) != 0)){
                     echo '<input type="hidden" name="proposalID" value="'.$_GET['proposalID'].'">';
+                }else{
+                    //If it is not a new proposal or does not have a proposal ID, then we got nothing, dashboard it is!
+                    header("Location:dashboard.php");
+                    exit;
+                    
                 }
             ?>
       </h3>
@@ -229,19 +198,19 @@ include_once('include/nav.php');
             </label>
             <div>
               <label class="checkbox-inline">
-                <input type="checkbox" name="day-0" <?php if(array_key_exists(0,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>M
+                <input type="checkbox" name="day-1" <?php if(array_key_exists(1,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>M
               </label>
               <label class="checkbox-inline">
-                <input type="checkbox" name="day-1" <?php if(array_key_exists(1,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>T
+                <input type="checkbox" name="day-2" <?php if(array_key_exists(2,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>T
               </label>
               <label class="checkbox-inline">
-                <input type="checkbox" name="day-2" <?php if(array_key_exists(2,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>W
+                <input type="checkbox" name="day-3" <?php if(array_key_exists(3,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>W
               </label>
               <label class="checkbox-inline">
-                <input type="checkbox" name="day-3" <?php if(array_key_exists(3,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>Th
+                <input type="checkbox" name="day-4" <?php if(array_key_exists(4,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>Th
               </label>
               <label class="checkbox-inline">
-                <input type="checkbox" name="day-4" <?php if(array_key_exists(4,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>F
+                <input type="checkbox" name="day-5" <?php if(array_key_exists(5,$pageProposal->getDays())){ echo 'checked="checked"'; } ?>>F
               </label>
             </div>
             <div>

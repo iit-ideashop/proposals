@@ -56,6 +56,7 @@ class Proposal {
                 $this->status = $rows['status'];
             }
         }else{
+            $this->ID = 0;
             $this->Days = array(0);
             $this->Semester = 0;
             $this->ApprovingDean = 0;
@@ -138,10 +139,18 @@ class Proposal {
         return $checkboxesArray;
     }
     
+    function getRecentID(){
+        //This function will get the ID of the recently inserted record in the database
+        $sql = "SELECT ID from proposals WHERE OwnerID='".$_SESSION['proposal_userID']."' ORDER BY ID DESC LIMIT 1";
+        $query = $this->dbconn->query($sql);
+        $data = $query->fetch_assoc();
+        return $data['ID'];
+    }
+    
     function readDayfromForm(){
         //This is going to be really simple, we have to return the day array in the form OF 0-4 being MON-FRI
         $dayArray = array();
-        for($i=0;$i<=4;$i++){
+        for($i=1;$i<=5;$i++){
             if(isset($_POST['day-'.$i])){
                 if($_POST['day-'.$i] == 'on'){
                     array_push($dayArray,$i);
@@ -197,6 +206,7 @@ class Proposal {
                                         '".serialize($this->Days)."','".$this->Time."','".$this->CourseNumber."',
                                             '".$this->OwnerID."','".$this->status."')";
            $query = $this->dbconn->query($sql);
+           $this->ID = $this->getRecentID();
        }else{
            //we have to update the proposal in the database
            $sql = "UPDATE proposals SET Instructor='".$this->Instructor."',
@@ -460,6 +470,81 @@ class Proposal {
        }
        return $statusClass;
    }
+   static function convertStatusToProgressBox($statusID){
+       $output = '
+      <div id="proposal-progress">
+
+      <div class="row text-center">
+        <div class="col-lg-2 col-offset-1 current-status">
+          Proposal Development
+        </div>
+        <div class="col-lg-2">
+          Dean Review
+        </div>
+        <div class="col-lg-2">
+          IPRO Committee Review
+        </div>
+        <div class="col-lg-2">
+          Scheduling/Contracting
+        </div>
+        <div class="col-lg-2">
+          IPRO Approved!
+        </div>
+      </div>';
+       switch ($statusID){
+           case 0:
+               $output .='
+                   <div class="progress">
+                        <div class="progress-bar progress-1"></div>
+                    </div>';
+               break;
+           case 1:
+               $output .='
+                   <div class="progress">
+                        <div class="progress-bar progress-1"></div>
+                    </div>';
+               
+               break;
+           case 2:
+               $output .='
+                   <div class="progress">
+                        <div class="progress-bar progress-2"></div>
+                    </div>';
+
+               break;
+           case 3:
+               $output .='
+                   <div class="progress">
+                        <div class="progress-bar progress-2"></div>
+                    </div>';
+               
+               break;
+           case 4:
+               $output .='
+                   <div class="progress">
+                        <div class="progress-bar progress-3"></div>
+                    </div>';
+
+               break;
+           case 5:
+               $output .='
+                   <div class="progress">
+                        <div class="progress-bar progress-4"></div>
+                    </div>';
+               
+               break;
+           default:
+               $output .='
+                   <div class="progress">
+                        <div class="progress-bar progress-1"></div>
+                    </div>';
+
+               break;
+       }
+       $output .= '</div>';
+       return $output;
+   }
+   
    
    function submitForApproval(){
        //We are going to set this proposal's status to "sent to dean"
@@ -507,7 +592,7 @@ class Proposal {
    function displayDays(){
        $dayArray = array('M','T','W','Th','F');
        $output ='';
-       for($i=0;$i<count($this->Days);$i++){
+       for($i=1;$i<count($this->Days)+1;$i++){
            $output .= $dayArray[$this->Days[$i]].' ';
        }
        return $output;

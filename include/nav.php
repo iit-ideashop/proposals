@@ -19,7 +19,7 @@
                     Dasboard <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="dashboard.html">Proposals</a></li>
+                        <li><a href="dashboard.php">Proposals</a></li>
                         <li><a href="archive.html">Archive</a></li>
                     </ul>
                 </div>

@@ -34,6 +34,7 @@ include_once('include/nav.php');
 
 <div id="show-proposal">
   <div class="container jumbotron">
+       <?php echo Proposal::convertStatusToProgressBox($pageProposal->getStatus()) ?>
     <div class="pull-right">
       <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -87,8 +88,7 @@ include_once('include/nav.php');
         <p>Time: <?php echo $pageProposal->getTime(); ?><br>
             Days: <?php echo $pageProposal->displayDays(); ?><br>
             Semester: <?php echo $pageProposal->getSemester(); ?></p>
-        <h5>Targeted Disciplines</h5>
-        <p><?php echo $pageProposal->displayTargetedMajors(); ?></p>
+        
       </div>
     </div>
   </div>
