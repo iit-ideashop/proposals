@@ -17,6 +17,7 @@ Login::loginCheck(0);
 <body>
 <?php
 include_once('include/nav.php');
+$approvalsArray = Proposal::getMyApprovals();
 ?>
 
 <div id="approvals">
@@ -27,46 +28,33 @@ include_once('include/nav.php');
       </h3>
     </div>
     <ul id="proposal-list">
-      <li class="proposal-item row">
-        <div class="col-lg-7">
-          <a href="#"><span>Project Title</span></a>
-        </div>
-        <div class="col-lg-3 text-center">
-          <span class="label label-warning">Awaiting Revision</span>
-        </div>
-        <div class="col-lg-2">
-          <div class="btn-group btn-block">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              Actions <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#">Edit</a></li>
-              <li><a href="#">View</a></li>
-              <li><a href="#">Unarchive</a></li>
-            </ul>
-          </div>
-        </div>
-      </li>
-      <li class="proposal-item row">
-        <div class="col-lg-7">
-          <a href="#"><span>Project Title</span></a>
-        </div>
-        <div class="col-lg-3 text-center">
-          <span class="label label-warning">Awaiting Approval</span>
-        </div>
-        <div class="col-lg-2">
-          <div class="btn-group btn-block">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              Actions <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#">Edit</a></li>
-              <li><a href="#">View</a></li>
-              <li><a href="#">Unarchive</a></li>
-            </ul>
-          </div>
-        </div>
-      </li>
+      <?php
+      for($i=0;$i<count($approvalsArray);$i++){
+          echo '
+        <li class="proposal-item row">
+            <div class="col-lg-7">
+                <a href="#"><span>'.$approvalsArray[$i]->getTitle().'</span></a>
+            </div>
+            <div class="col-lg-3 text-center">
+                <span class="label label-warning">Awaiting Revision</span>
+            </div>
+            <div class="col-lg-2">
+                <div class="btn-group btn-block">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Actions <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">View</a></li>
+                        <li><a href="#">Approve</a></li>
+                        <li><a href="#">Approve with Revisions</a></li>
+                        <li><a href="#">Deny</a></li>
+                        <li><a href="#">Deny with Revisions</a></li>
+                    </ul>
+                </div>
+            </div>
+        </li>';
+      }  
+      ?>
     </ul>
   </div>
 </div>

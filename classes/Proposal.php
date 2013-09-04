@@ -622,7 +622,7 @@ class Proposal {
    static function calculateMyApprovals(){
        //function returns an integer relating to how many approvals the logged in user has
        if(($_SESSION['proposal_LoggedIn'])&&($_SESSION['proposal_UserLevel'] == 2)){
-           //Must be logged in
+           //Must be logged in & dean
            $sql = "SELECT ID,ApprovingDean FROM proposals WHERE status='2'";
            $dbconnlocal = new Database();
            $dbconnlocal = $dbconnlocal->getConnection();
@@ -640,6 +640,30 @@ class Proposal {
                }
            }
            return $approvalCount;
+       }
+   }
+   
+   static function getMyApprovals(){
+       if(($_SESSION['proposal_LoggedIn'])&&($_SESSION['proposal_UserLevel'] == 2)){
+           //Must be logged in & dean
+           $sql = "SELECT ID,ApprovingDean FROM proposals WHERE status='2'";
+           $dbconnlocal = new Database();
+           $dbconnlocal = $dbconnlocal->getConnection();
+           $result = $dbconnlocal->query($sql);
+           //lets find out our DEAN ID
+           $deanIDSql = "SELECT id FROM deans WHERE userID='".intval($_SESSION['proposal_userID'])."'";
+           $deanQuery = $dbconnlocal->query($deanIDSql);
+           $deanRows = $deanQuery->fetch_assoc();
+           $deanID = $deanRows['id'];
+           //Now that we know our dean id and the id's + approving deans list we have to make proposal objects and return them
+           $proposalsArray = array();
+           while($approvals = $result->fetch_assoc()){
+               if($approvals['ApprovingDean'] == $deanID){
+                   $newProposal = new Proposal($approvals['ID']);
+                   array_push($proposalsArray, $newProposal);
+               }
+           }
+           return $proposalsArray;
        }
    }
 }
