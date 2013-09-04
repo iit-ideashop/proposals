@@ -74,6 +74,8 @@ class Proposal {
         $sql ="SELECT ID FROM proposals WHERE OwnerID='".intval($_SESSION['proposal_userID'])."'";
         $result = $dbconnlocal->query($sql);
         $proposalArray = array();
+        
+        
         while($row = $result->fetch_assoc()){
             //into a temporary object and then into the array
             $tempPropObj = new Proposal($row['ID']);
@@ -148,12 +150,12 @@ class Proposal {
     }
     
     function readDayfromForm(){
-        //This is going to be really simple, we have to return the day array in the form OF 0-4 being MON-FRI
+        //This is going to be really simple, we have to return the day array in the form OF 1-5 being MON-FRI
         $dayArray = array();
         for($i=1;$i<=5;$i++){
             if(isset($_POST['day-'.$i])){
                 if($_POST['day-'.$i] == 'on'){
-                    array_push($dayArray,$i);
+                    $dayArray[$i] = 'on';
                 }
             }
         }
@@ -434,6 +436,9 @@ class Proposal {
                $statusText = 'Sent to Committee';
                break;
            case 5:
+               $statusText = 'Scheduling/Contracting';
+               break;
+           case 6:
                $statusText = 'Approved!';
                break;
            default:
@@ -462,6 +467,9 @@ class Proposal {
                $statusClass = 'label-2';
                break;
            case 5:
+               $statusClass = 'label-6';
+               break;
+           case 6:
                $statusClass = 'label-7';
                break;
            default:
@@ -471,23 +479,40 @@ class Proposal {
        return $statusClass;
    }
    static function convertStatusToProgressBox($statusID){
+       //current status array
+       $currentStatus = array();
+       if($statusID == 0){
+           $currentStatus[1] = 'current-status';
+       }elseif($statusID == 1){
+           $currentStatus[1] = 'current-status';           
+       }elseif($statusID == 2){
+           $currentStatus[2] = 'current-status';           
+       }elseif($statusID == 3){
+           $currentStatus[2] = 'current-status';           
+       }elseif($statusID == 4){
+           $currentStatus[3] = 'current-status';           
+       }elseif($statusID == 5){
+           $currentStatus[4] = 'current-status';           
+       }elseif($statusID == 6){
+           $currentStatus[5] = 'current-status';           
+       }
        $output = '
       <div id="proposal-progress">
 
       <div class="row text-center">
-        <div class="col-lg-2 col-offset-1 current-status">
+        <div class="col-lg-2 col-offset-1 '.@$currentStatus[1].'">
           Proposal Development
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 '.@$currentStatus[2].'">
           Dean Review
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 '.@$currentStatus[3].'">
           IPRO Committee Review
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 '.@$currentStatus[4].'">
           Scheduling/Contracting
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 '.@$currentStatus[5].'">
           IPRO Approved!
         </div>
       </div>';
@@ -533,6 +558,13 @@ class Proposal {
                     </div>';
                
                break;
+           case 6:
+               $output .='
+                   <div class="progress">
+                        <div class="progress-bar progress-full"></div>
+                    </div>';
+               
+               break;
            default:
                $output .='
                    <div class="progress">
@@ -574,28 +606,41 @@ class Proposal {
            return 'Error';
        }
    }
-   
-   function displayTargetedMajors(){
-       $sql = "SELECT * FROM disciplines";
-       $result = $this->dbconn->query($sql);
-       $output ='';
-       $disciplinesArray = array();
-       while($rows = $result->fetch_assoc()){
-           $disciplinesArray[$rows['id']] = $rows['disciplineName'];
-       }
-       for($i=0;$i<count($this->Disciplines);$i++){
-           echo $disciplinesArray[$this->Disciplines[$i]].' ';
-       }
-       return $output;
-   }
+
    
    function displayDays(){
        $dayArray = array('M','T','W','Th','F');
        $output ='';
-       for($i=1;$i<count($this->Days)+1;$i++){
-           $output .= $dayArray[$this->Days[$i]].' ';
+       for($i=0;$i<5;$i++){
+           if(@$this->Days[$i+1] == 'on'){
+               $output .= $dayArray[$i].' ';
+           }
        }
        return $output;
+   }
+  
+   static function calculateMyApprovals(){
+       //function returns an integer relating to how many approvals the logged in user has
+       if(($_SESSION['proposal_LoggedIn'])&&($_SESSION['proposal_UserLevel'] == 2)){
+           //Must be logged in
+           $sql = "SELECT ID,ApprovingDean FROM proposals WHERE status='2'";
+           $dbconnlocal = new Database();
+           $dbconnlocal = $dbconnlocal->getConnection();
+           $result = $dbconnlocal->query($sql);
+           //lets find out our DEAN ID
+           $deanIDSql = "SELECT id FROM deans WHERE userID='".intval($_SESSION['proposal_userID'])."'";
+           $deanQuery = $dbconnlocal->query($deanIDSql);
+           $deanRows = $deanQuery->fetch_assoc();
+           $deanID = $deanRows['id'];
+           //now that we know our dean id and we know the proposals that are awaiting dean approval, we count
+           $approvalCount = 0;
+           while($approvals = $result->fetch_assoc()){
+               if($approvals['ApprovingDean'] == $deanID){
+                   $approvalCount = $approvalCount +1;
+               }
+           }
+           return $approvalCount;
+       }
    }
 }
 ?>

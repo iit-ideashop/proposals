@@ -34,11 +34,12 @@ Login::loginCheck(0);
         $proposalArray = Proposal::getMyProposals();
       ?>
     <ul id="proposal-list">
+       
        <?php
        for($i=0;$i<count($proposalArray);$i++){
            echo '<li class="proposal-item row">
                     <div class="col-lg-7">
-                        <a href="#"><span>'.$proposalArray[$i]->getTitle().'</span></a>
+                        <a href="showProposal.php?proposalID='.$proposalArray[$i]->getID().'"><span>'.$proposalArray[$i]->getTitle().'</span></a>
                     </div>
                     <div class="col-lg-5 text-right">
                         <span class="label '.Proposal::convertStatusToClassColor($proposalArray[$i]->getStatus()).'">'.Proposal::convertStatusToText($proposalArray[$i]->getStatus()).'</span>
@@ -55,6 +56,9 @@ Login::loginCheck(0);
                         </div>
                     </div>
                 </li>';
+       }
+       if(count($proposalArray) == 0){
+           echo 'No Proposals to display';
        }
        ?>
       <!-- Proposal item prototypes

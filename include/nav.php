@@ -13,8 +13,14 @@
               </nav>';
     }elseif(@$_SESSION['proposal_LoggedIn'] == 1){
         echo '<nav class="pull-right">
-                <a href="approvals.html" class="btn btn-primary navbar-btn">Approvals <span class="badge">10</span></a>
-                <div class="btn-group">
+             ';
+        //Here we will do some calculation of approvals and if the link should be shown
+        //Approvals will only be shown to committee and deans so
+        if(($_SESSION['proposal_UserLevel'] == 2)||($_SESSION['proposal_UserLevel'] == 3)){
+            echo '<a href="approvals.php" class="btn btn-primary navbar-btn">Approvals <span class="badge">'.Proposal::calculateMyApprovals().'</span></a>
+                ';
+        }
+        echo '<div class="btn-group">
                     <button type="button" class="btn btn-primary navbar-btn dropdown-toggle" data-toggle="dropdown">
                     Dasboard <span class="caret"></span>
                     </button>
