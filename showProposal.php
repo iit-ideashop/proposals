@@ -13,6 +13,20 @@ $pageProposal;
 if(intval(@$_GET['proposalID']) != 0){
     $pageProposal = new Proposal($_GET['proposalID']);
 }
+//Login has been checked and proposal has been loaded, next lets see if there are any actions to be done
+if(@$_GET['action'] == 'approvedeny'){
+    //We are either approving or denying a proposal application
+    if($_POST['submit'] == "approve"){
+        $pageProposal->saveComments($_POST['comment']);
+        $pageProposal->approveProposal();
+    }elseif($_POST['submit'] == "deny"){
+        $pageProposal->saveComments($_POST['comment']);
+        $pageProposal->denyProposal();
+    }
+    header("Location:?proposalID=".$pageProposal->getID());
+    exit;
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -90,6 +104,19 @@ include_once('include/nav.php');
             Semester: <?php echo $pageProposal->getSemester(); ?></p>
         
       </div>
+       <?php
+       //This is where we will build our approvals module
+       if((($pageProposal->getStatus() == 2)&&($_SESSION['proposal_UserLevel'] == 2))||(($pageProposal->getStatus() == 4)&&($_SESSION['proposal_UserLevel'] == 3))){
+           //This user is a dean/committee, we have to show a form to submit a comment and approve or deny the proposal
+           echo 'Approve or Deny this request';
+           echo '<form action="?proposalID='.$pageProposal->getID().'&action=approvedeny" method="POST">';
+           echo '<textarea name="comment" cols="50" rows="4" placeholder="Enter your comments here" class="form-control"></textarea><br>
+                 <input type="submit" name="submit" value="approve" class="btn btn-primary"> <input type="submit" name="submit" value="deny" class="btn btn-danger">';
+           echo '</form>';
+       }
+       
+       
+       ?> 
     </div>
   </div>
 </div>

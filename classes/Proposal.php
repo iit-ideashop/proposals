@@ -666,5 +666,33 @@ class Proposal {
            return $proposalsArray;
        }
    }
+   
+   
+   function approveProposal(){
+       //This function will be used to approve a proposal, based on the user's Level. A dean will approve a proposal and submit it to committee, a committee with approve and move to scheduling
+       if(($_SESSION['proposal_UserLevel'] == 2)&&($this->status == 2)){ // user is a dean and the status of the proposal is "sent to dean"
+           $this->status = 4;
+       }elseif(($_SESSION['proposal_UserLevel'] == 3)&&($this->status == 4)){ //user is part of the committee and the proposal is "sent to committee"
+           $this->status = 5;
+       }
+   }
+   
+   function denyProposal(){
+       if(($_SESSION['proposal_UserLevel'] == 2)&&($this->status == 2)){ //user is a dean and the proposal status is level 2 "sent to dean"
+           $this->status = 1;//Proposal denied by dean
+       }elseif(($_SESSION['proposal_UserLevel'] == 3)&&($this->status == 4)){//user is part of committee and the proposal has been sent to committee
+           $this->status = 3; // Proposal denied by committee
+       }
+   }
+   
+   function saveComments($comment){
+       //This function will save any comments entered by a user.
+       $comment = Database::sterilizeStr($comment);
+       $sql = "INSERT INTO proposal_comments(comment,timestamp,userID,proposalID) 
+           VALUES('".$comment."','".time()."','".$_SESSION['proposal_userID']."','".$this->ID."')";
+       $this->dbconn->query($sql);
+       return true;
+   }
+   
 }
 ?>
