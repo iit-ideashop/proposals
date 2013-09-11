@@ -9,7 +9,6 @@ class Proposal {
     private $CoInstructorEmail;
     private $Sponsor;
     private $ApprovingDean; // This will be an integer which is tied to an approving dean from a different table
-    private $Disciplines; // this is going to be an array of discipline ID's
     private $Title;
     private $Problem;
     private $Objective;
@@ -43,7 +42,6 @@ class Proposal {
                 $this->CoInstructorEmail = $rows['CoInstructorEmail'];
                 $this->Sponsor = $rows['Sponsor'];
                 $this->ApprovingDean = $rows['ApprovingDean'];
-                $this->Disciplines = unserialize($rows['Disciplines']);
                 $this->Title = $rows['Title'];
                 $this->Problem = $rows['Problem'];
                 $this->Objective = $rows['Objective'];
@@ -60,7 +58,7 @@ class Proposal {
             $this->Days = array(0);
             $this->Semester = 0;
             $this->ApprovingDean = 0;
-            $this->Disciplines = array();
+
             $this->OwnerID = $_SESSION['proposal_userID'];
             $this->CourseNumber = 0;
             $this->status = 0;
@@ -85,61 +83,6 @@ class Proposal {
         return $proposalArray;
     }
     
-    
-    static function generateDisciplinesCheckboxes($checkedArray){
-        //This function will generate checkboxes for the disciplines in the database.
-        //First we must pull all of the disciplines from the database
-        $dbconnlocal = new Database();
-        $dbconnlocal = $dbconnlocal->getConnection();
-        $sql = "SELECT * FROM disciplines";
-        $result = $dbconnlocal->query($sql);
-        $discipleArray = array();
-        while($rows = $result->fetch_assoc()){
-            $discipleArray[$rows['id']] = $rows['disciplineName'];
-        }
-        //Next we generate checkBoxes
-        if($checkedArray == 0){
-            $checkedArray = array(0);
-        }
-        //Next we generate the checkboxes
-        $output = '';
-        for($i=1;$i <= count($discipleArray);$i++){
-            $checked = '';
-            if(in_array($i, $checkedArray)){
-                $checked = 'checked="checked"';
-            }
-            $output .= '<label class="checkbox-inline">
-                <input type="checkbox" name="disc-'.$i.'" '.$checked.'> '.$discipleArray[$i].'
-              </label>';
-        }
-        $dbconnlocal->close();
-        return $output;
-    }
-    
-    function readFromDiscipleCheckboxes(){
-        //This function is used to read the checkboxes values and put the ID's into an array.
-        //First let's get the values we can read
-        $sql = "SELECT * FROM disciplines";
-        $result = $this->dbconn->query($sql);
-        $discipleArray = array();
-        while($rows = $result->fetch_assoc()){
-            $discipleArray[$rows['id']] = $rows['disciplineName'];
-        }
-        $checkboxesArray = array();
-        //Now let's loop
-        foreach($discipleArray as $key=>$value){
-            //$key is the Disciple ID
-            //$value is the DISCIPLE value
-            if(isset($_POST['disc-'.$key])){
-                //Value is set now let's see if it's on
-                if($_POST['disc-'.$key] == 'on'){
-                    //checkbox was checked! add $key to the array using array_push
-                    array_push($checkboxesArray, $key);
-                }
-            }
-        }
-        return $checkboxesArray;
-    }
     
     function getRecentID(){
         //This function will get the ID of the recently inserted record in the database
@@ -169,9 +112,7 @@ class Proposal {
         $this->CoInstructor = $_POST['coInstructorName'];
         $this->CoInstructorEmail = $_POST['coInstructorEmail'];
         $this->Sponsor = $_POST['sponsor'];
-        
-        //To get this value we have to run readFromDiscipleCheckboxes and it returns an array of checkboxes
-        $this->Disciplines = $this->readFromDiscipleCheckboxes();
+     
         
         $this->ApprovingDean = $_POST['approvingDean'];
         $this->Title = $_POST['projectTitle'];
@@ -189,45 +130,44 @@ class Proposal {
    function saveToDatabase(){
        if($this->ID === 0){
            //New Proposal
-           //Step 1, figure out the proposal ID for this new proposal
-           $proposalIDSql = "SHOW TABLE STATUS LIKE 'proposals_control'";
-           $proposalIDResult = $this->dbconn->query($proposalIDSql);
-           $proposalIDResult = $proposalIDResult->fetch_assoc();
-           $nextProposalID = $proposalIDResult['Auto_increment'];
-           //Step 2, create the next proposal ID and set the revision to 1
-           $controlSql = "INSERT INTO proposals_control(proposalID,lastRevision) VALUES('".$nextProposalID."','1')";
-           $controlQuery = $this->dbconn->query($controlSql);
-           //Step 3 insert the new proposal into the database
-           //TODO: ADD INSERT CODE FOR NEW PROPOSAL
-           $sql = "INSERT INTO proposals(Instructor,InstructorEmail,CoInstructor,CoInstructorEmail,Sponsor,ApprovingDean,Disciplines,Title,Problem,Objective,Approach,Semester,Days,Time,CourseNumber,OwnerID,status) 
-                    VALUES('".$this->Instructor."','".$this->InstructorEmail."'
-                        ,'".$this->CoInstructor."','".$this->CoInstructorEmail."',
-                            '".$this->Sponsor."','".$this->ApprovingDean."',
-                                '".serialize($this->Disciplines)."','".$this->Title."','".$this->Problem."'
-                                    ,'".$this->Objective."','".$this->Approach."','".$this->Semester."',
-                                        '".serialize($this->Days)."','".$this->Time."','".$this->CourseNumber."',
-                                            '".$this->OwnerID."','".$this->status."')";
+           //Insert the new proposal into the database
+           $sql = "INSERT INTO proposals(Instructor,InstructorEmail,CoInstructor,CoInstructorEmail,Sponsor,ApprovingDean,Title,Problem,Objective,Approach,Semester,Days,Time,CourseNumber,OwnerID,status) 
+                    VALUES('".$this->dbconn->real_escape_string($this->Instructor)."',
+                            '".$this->dbconn->real_escape_string($this->InstructorEmail)."',
+                            '".$this->dbconn->real_escape_string($this->CoInstructor)."',
+                            '".$this->dbconn->real_escape_string($this->CoInstructorEmail)."',
+                            '".$this->dbconn->real_escape_string($this->Sponsor)."',
+                            '".$this->dbconn->real_escape_string($this->ApprovingDean)."',
+                            '".$this->dbconn->real_escape_string($this->Title)."',
+                            '".$this->dbconn->real_escape_string($this->Problem)."',
+                            '".$this->dbconn->real_escape_string($this->Objective)."',
+                            '".$this->dbconn->real_escape_string($this->Approach)."',
+                            '".$this->dbconn->real_escape_string($this->Semester)."',
+                            '".$this->dbconn->real_escape_string(serialize($this->Days))."',
+                            '".$this->dbconn->real_escape_string($this->Time)."',
+                            '".$this->dbconn->real_escape_string($this->CourseNumber)."',
+                            '".$this->dbconn->real_escape_string($this->OwnerID)."',
+                            '".$this->dbconn->real_escape_string($this->status)."')";
            $query = $this->dbconn->query($sql);
            $this->ID = $this->getRecentID();
        }else{
            //we have to update the proposal in the database
-           $sql = "UPDATE proposals SET Instructor='".$this->Instructor."',
-               InstructorEmail='".$this->InstructorEmail."',
-               CoInstructor='".$this->CoInstructor."',
-               CoInstructorEmail='".$this->CoInstructorEmail."',
-               Sponsor='".$this->Sponsor."',
-               ApprovingDean='".$this->ApprovingDean."',
-               Disciplines='".serialize($this->Disciplines)."',
-               Title='".$this->Title."',
-               Problem='".$this->Problem."',
-               Objective='".$this->Objective."',
-               Approach='".$this->Approach."',
-               Semester='".$this->Semester."',
-               Days='".serialize($this->Days)."',
-               Time='".$this->Time."',
-               CourseNumber='".$this->CourseNumber."',
-               OwnerID='".$this->OwnerID."',
-               status='".$this->status."' WHERE ID='".$this->ID."' LIMIT 1";
+           $sql = "UPDATE proposals SET Instructor='".$this->dbconn->real_escape_string($this->Instructor)."',
+               InstructorEmail='".$this->dbconn->real_escape_string($this->InstructorEmail)."',
+               CoInstructor='".$this->dbconn->real_escape_string($this->CoInstructor)."',
+               CoInstructorEmail='".$this->dbconn->real_escape_string($this->CoInstructorEmail)."',
+               Sponsor='".$this->dbconn->real_escape_string($this->Sponsor)."',
+               ApprovingDean='".$this->dbconn->real_escape_string($this->ApprovingDean)."',
+               Title='".$this->dbconn->real_escape_string($this->Title)."',
+               Problem='".$this->dbconn->real_escape_string($this->Problem)."',
+               Objective='".$this->dbconn->real_escape_string($this->Objective)."',
+               Approach='".$this->dbconn->real_escape_string($this->Approach)."',
+               Semester='".$this->dbconn->real_escape_string($this->Semester)."',
+               Days='".$this->dbconn->real_escape_string(serialize($this->Days))."',
+               Time='".$this->dbconn->real_escape_string($this->Time)."',
+               CourseNumber='".$this->dbconn->real_escape_string($this->CourseNumber)."',
+               OwnerID='".$this->dbconn->real_escape_string($this->OwnerID)."',
+               status='".$this->dbconn->real_escape_string($this->status)."' WHERE ID='".$this->dbconn->real_escape_string($this->ID)."' LIMIT 1";
            $query = $this->dbconn->query($sql);
        }
    }
@@ -333,13 +273,6 @@ class Proposal {
        $this->ApprovingDean = $newDean;
    }
    
-   function getDisciplines(){
-       return $this->Disciplines;
-   }
-   
-   function setDisciplines($newDisciplines){
-       $this->Disciplines = $newDisciplines;
-   }
    
    function getTitle(){
        return $this->Title;
@@ -579,8 +512,14 @@ class Proposal {
    
    
    function submitForApproval(){
+       //If this proposal is at status 0 or 1 we are submitting directly to the dean
+       if(($this->status == 0)||($this->status == 1)){
+           $this->status = 2; // Submit to the dean
+       }elseif($this->status == 3){ // proposal was denied by committee, we are going to submit directly to them
+           $this->status = 4;
+       }
        //We are going to set this proposal's status to "sent to dean"
-       $this->status = 2;
+       
    }
    
    function getDeanName(){
@@ -622,6 +561,25 @@ class Proposal {
    static function calculateMyApprovals(){
        //function returns an integer relating to how many approvals the logged in user has
        if(($_SESSION['proposal_LoggedIn'])&&($_SESSION['proposal_UserLevel'] == 2)){
+           //Must be logged in & dean
+           $sql = "SELECT ID,ApprovingDean FROM proposals WHERE status='2'";
+           $dbconnlocal = new Database();
+           $dbconnlocal = $dbconnlocal->getConnection();
+           $result = $dbconnlocal->query($sql);
+           //lets find out our DEAN ID
+           $deanIDSql = "SELECT id FROM deans WHERE userID='".intval($_SESSION['proposal_userID'])."'";
+           $deanQuery = $dbconnlocal->query($deanIDSql);
+           $deanRows = $deanQuery->fetch_assoc();
+           $deanID = $deanRows['id'];
+           //now that we know our dean id and we know the proposals that are awaiting dean approval, we count
+           $approvalCount = 0;
+           while($approvals = $result->fetch_assoc()){
+               if($approvals['ApprovingDean'] == $deanID){
+                   $approvalCount = $approvalCount +1;
+               }
+           }
+           return $approvalCount;
+       }elseif(($_SESSION['proposal_LoggedIn'])&&($_SESSION['proposal_UserLevel'] == 3)){//For a committee memeber
            //Must be logged in & dean
            $sql = "SELECT ID,ApprovingDean FROM proposals WHERE status='2'";
            $dbconnlocal = new Database();
@@ -702,9 +660,11 @@ class Proposal {
    function saveComments($comment){
        //This function will save any comments entered by a user.
        $comment = Database::sterilizeStr($comment);
-       $sql = "INSERT INTO proposal_comments(comment,timestamp,userID,proposalID) 
-           VALUES('".$comment."','".time()."','".$_SESSION['proposal_userID']."','".$this->ID."')";
-       $this->dbconn->query($sql);
+       if($comment != ''){
+            $sql = "INSERT INTO proposal_comments(comment,timestamp,userID,proposalID) 
+                VALUES('".$this->dbconn->real_escape_string($comment)."','".$this->dbconn->real_escape_string(time())."','".$this->dbconn->real_escape_string($_SESSION['proposal_userID'])."','".$this->dbconn->real_escape_string($this->ID)."')";
+            $this->dbconn->query($sql);
+       }
        return true;
    }
    

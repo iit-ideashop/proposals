@@ -16,15 +16,23 @@ if(intval(@$_GET['proposalID']) != 0){
 //Login has been checked and proposal has been loaded, next lets see if there are any actions to be done
 if(@$_GET['action'] == 'approvedeny'){
     //We are either approving or denying a proposal application
-    if($_POST['submit'] == "approve"){
+    if(@$_POST['submit'] == "approve"){
         $pageProposal->saveComments($_POST['comment']);
         $pageProposal->approveProposal();
         $pageProposal->saveToDatabase();
-    }elseif($_POST['submit'] == "deny"){
+    }elseif(@$_POST['submit'] == "deny"){
         $pageProposal->saveComments($_POST['comment']);
         $pageProposal->denyProposal();
         $pageProposal->saveToDatabase();
+    }elseif(@$_GET['mode'] == 'approve'){
+        $pageProposal->approveProposal();
+        $pageProposal->saveToDatabase();
+    }elseif(@$_GET['mode'] == 'deny'){
+        $pageProposal->denyProposal();
+        $pageProposal->saveToDatabase();
     }
+    
+    
     header("Location:?proposalID=".$pageProposal->getID());
     exit;
 }

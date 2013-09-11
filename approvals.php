@@ -44,11 +44,11 @@ $approvalsArray = Proposal::getMyApprovals();
                     Actions <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">View</a></li>
-                        <li><a href="#">Approve</a></li>
-                        <li><a href="#">Approve with Revisions</a></li>
-                        <li><a href="#">Deny</a></li>
-                        <li><a href="#">Deny with Revisions</a></li>
+                        <li><a href="showProposal.php?proposalID='.$approvalsArray[$i]->getID().'">View</a></li>
+                        <li><a href="showProposal.php?proposalID='.$approvalsArray[$i]->getID().'&action=approvedeny&mode=approve">Approve</a></li>
+                        <li><a href="showProposal.php?proposalID='.$approvalsArray[$i]->getID().'">Approve with Revisions</a></li>
+                        <li><a href="showProposal.php?proposalID='.$approvalsArray[$i]->getID().'&action=approvedeny&mode=deny">Deny</a></li>
+                        <li><a href="showProposal.php?proposalID='.$approvalsArray[$i]->getID().'">Deny with Revisions</a></li>
                     </ul>
                 </div>
             </div>
