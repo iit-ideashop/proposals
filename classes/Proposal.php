@@ -664,6 +664,20 @@ class Proposal {
                }
            }
            return $proposalsArray;
+       }elseif(($_SESSION['proposal_LoggedIn'])&&($_SESSION['proposal_UserLevel'] == 3)){
+           //Must be logged in & committee member
+           $sql = "SELECT ID FROM proposals WHERE status='4'";
+           $dbconnlocal = new Database();
+           $dbconnlocal = $dbconnlocal->getConnection();
+           $result = $dbconnlocal->query($sql);
+           //We have a list of proposals which are in "Sent to committee", lets show this list to the committee member
+           $proposalsArray = array();
+           while($approvals = $result->fetch_assoc()){
+                $newProposal = new Proposal($approvals['ID']);
+                array_push($proposalsArray, $newProposal);
+           }
+           return $proposalsArray;
+           
        }
    }
    
@@ -694,5 +708,33 @@ class Proposal {
        return true;
    }
    
+   static function userIDtoFullName($userID){
+       if(intval($userID) == 0){
+           exit;
+       }
+       $dbconnlocal = new Database();
+       $dbconnlocal = $dbconnlocal->getConnection();
+       $sql = "SELECT id,FName,LName FROM users WHERE id='".intval($userID)."'";
+       $query = $dbconnlocal->query($sql);
+       $row = $query->fetch_assoc();
+       return $row['FName'].' '.$row['LName'];
+   }
+   
+   function getComments(){
+       //we will be pulling comments for this proposal
+       $sql = "SELECT * FROM proposal_comments WHERE proposalID='".$this->ID."'";
+       $query = $this->dbconn->query($sql);
+       $CommentsArray = array();
+       while($rows = $query->fetch_assoc()){
+           //0 is the ID, 1 is the comment, 2 is the FullName of the user,3 is the timestamp
+           $singleCommentArray = array();
+           $singleCommentArray[0] = $rows['id'];
+           $singleCommentArray[1] = $rows['comment'];
+           $singleCommentArray[2] = Proposal::userIDtoFullName($rows['userID']);
+           $singleCommentArray[3] = $rows['timestamp'];
+           array_push($CommentsArray, $singleCommentArray);
+       }
+       return $CommentsArray;
+   }
 }
 ?>

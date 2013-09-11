@@ -19,9 +19,11 @@ if(@$_GET['action'] == 'approvedeny'){
     if($_POST['submit'] == "approve"){
         $pageProposal->saveComments($_POST['comment']);
         $pageProposal->approveProposal();
+        $pageProposal->saveToDatabase();
     }elseif($_POST['submit'] == "deny"){
         $pageProposal->saveComments($_POST['comment']);
         $pageProposal->denyProposal();
+        $pageProposal->saveToDatabase();
     }
     header("Location:?proposalID=".$pageProposal->getID());
     exit;
@@ -105,7 +107,24 @@ include_once('include/nav.php');
         
       </div>
        <?php
-       //This is where we will build our approvals module
+       
+
+        //This is where we will build our approvals module
+       //Let's show some comments
+       $commentsArray = $pageProposal->getComments();
+       if(count($commentsArray) != 0){
+           echo 'Comments';
+           echo '<div class="media">';
+           for($i =0;$i < count($commentsArray);$i++){
+               echo '<div class="media-body"><h4 class="media-heading">'.$commentsArray[$i][2].'</h4>'.$commentsArray[$i][1].'</div>';
+           }
+           echo '</div>';
+       }
+       
+       
+       
+       
+       
        if((($pageProposal->getStatus() == 2)&&($_SESSION['proposal_UserLevel'] == 2))||(($pageProposal->getStatus() == 4)&&($_SESSION['proposal_UserLevel'] == 3))){
            //This user is a dean/committee, we have to show a form to submit a comment and approve or deny the proposal
            echo 'Approve or Deny this request';

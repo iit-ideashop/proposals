@@ -33,7 +33,7 @@ $approvalsArray = Proposal::getMyApprovals();
           echo '
         <li class="proposal-item row">
             <div class="col-lg-7">
-                <a href="#"><span>'.$approvalsArray[$i]->getTitle().'</span></a>
+                <a href="showProposal.php?proposalID='.$approvalsArray[$i]->getID().'"><span>'.$approvalsArray[$i]->getTitle().'</span></a>
             </div>
             <div class="col-lg-3 text-center">
                 <span class="label label-warning">Awaiting Revision</span>
