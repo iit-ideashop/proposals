@@ -24,7 +24,7 @@ Login::loginCheck(0);
       <h3>
         My Proposals
         <div class="pull-right">
-          <a href="archive.html" class="btn btn-default">View Archive</a>
+          <!-- Archives currently not implemented <a href="archive.html" class="btn btn-default">View Archive</a> -->
           <a href="Proposal.php?newFlag=1" class="btn btn-success">Create a new proposal</a>
         </div>
       </h3>

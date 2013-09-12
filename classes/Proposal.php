@@ -515,11 +515,31 @@ class Proposal {
        //If this proposal is at status 0 or 1 we are submitting directly to the dean
        if(($this->status == 0)||($this->status == 1)){
            $this->status = 2; // Submit to the dean
+           $sendmail = new Email();
+           $sendmail->sendMessage($this->userIDtoEmail($this->ApprovingDean), 'You have a Proposal waiting to be approved', 'Hello '.$this->userIDtoFullName($this->ApprovingDean).', You have a proposal waiting to be approved in your queue. Please login to the IPRO Proposal system to approve this IPRO proposal.');
        }elseif($this->status == 3){ // proposal was denied by committee, we are going to submit directly to them
            $this->status = 4;
+           $sendmail = new Email();
+           $committeeIDs = $this->getCommitteeIDs();
+           for($i =0;$i < count($committeeIDs); $i++){
+                $sendmail->sendMessage($this->userIDtoEmail($committeeIDs[$i]), 'You have a Proposal waiting to be approved', 'Hello '.$this->userIDtoFullName($committeeIDs[$i]).', You have a proposal waiting to be approved in your queue. Please login to the IPRO Proposal system to approve this IPRO proposal.');
+
+           }
        }
        //We are going to set this proposal's status to "sent to dean"
        
+   }
+   
+   static function getCommitteeIDs(){
+       $dbconnlocal = new Database();
+       $dbconnlocal = $dbconnlocal->getConnection();
+       $sql = "SELECT id FROM users WHERE Level='4'";
+       $query = $dbconnlocal->query($sql);
+       $committeeIDs = array();
+       while($rows = $query->fetch_assoc()){
+           array_push($committeeIDs, $rows['id']);
+       }
+       return $committeeIDs;
    }
    
    function getDeanName(){
@@ -580,22 +600,14 @@ class Proposal {
            }
            return $approvalCount;
        }elseif(($_SESSION['proposal_LoggedIn'])&&($_SESSION['proposal_UserLevel'] == 3)){//For a committee memeber
-           //Must be logged in & dean
-           $sql = "SELECT ID,ApprovingDean FROM proposals WHERE status='2'";
+           //Must be logged in & committee member
+           $sql = "SELECT ID FROM proposals WHERE status='4'";
            $dbconnlocal = new Database();
            $dbconnlocal = $dbconnlocal->getConnection();
            $result = $dbconnlocal->query($sql);
-           //lets find out our DEAN ID
-           $deanIDSql = "SELECT id FROM deans WHERE userID='".intval($_SESSION['proposal_userID'])."'";
-           $deanQuery = $dbconnlocal->query($deanIDSql);
-           $deanRows = $deanQuery->fetch_assoc();
-           $deanID = $deanRows['id'];
-           //now that we know our dean id and we know the proposals that are awaiting dean approval, we count
            $approvalCount = 0;
            while($approvals = $result->fetch_assoc()){
-               if($approvals['ApprovingDean'] == $deanID){
-                   $approvalCount = $approvalCount +1;
-               }
+                $approvalCount = $approvalCount +1;
            }
            return $approvalCount;
        }
@@ -644,17 +656,26 @@ class Proposal {
        //This function will be used to approve a proposal, based on the user's Level. A dean will approve a proposal and submit it to committee, a committee with approve and move to scheduling
        if(($_SESSION['proposal_UserLevel'] == 2)&&($this->status == 2)){ // user is a dean and the status of the proposal is "sent to dean"
            $this->status = 4;
+           //We have to send an email that the proposal has been approved by the Dean to the user
+           $sendmail = new Email();
+           $sendmail->sendMessage($this->userIDtoEmail($this->OwnerID), 'Your Proposal has been dean approved!', 'Hello '.$this->userIDtoFullName($this->OwnerID).', Your proposal has been approved by your dean and has been forwarded to the committee');
        }elseif(($_SESSION['proposal_UserLevel'] == 3)&&($this->status == 4)){ //user is part of the committee and the proposal is "sent to committee"
            $this->status = 5;
+           $sendmail = new Email();
+           $sendmail->sendMessage($this->userIDtoEmail($this->OwnerID), 'Your Proposal has been committee approved!', 'Hello '.$this->userIDtoFullName($this->OwnerID).', Your proposal has been approved by the IPRO committee. Your IPRO is currently being planned and scheduled.');
        }
    }
    
    function denyProposal(){
        if(($_SESSION['proposal_UserLevel'] == 2)&&($this->status == 2)){ //user is a dean and the proposal status is level 2 "sent to dean"
            $this->status = 1;//Proposal denied by dean
+           $sendmail = new Email();
+           $sendmail->sendMessage($this->userIDtoEmail($this->OwnerID), 'Your proposal has been denied by you dean', 'Hello '.$this->userIDtoFullName($this->OwnerID).', Your proposal has been denied by your dean. Please login to the IPRO proposal system to review the decision');           
        }elseif(($_SESSION['proposal_UserLevel'] == 3)&&($this->status == 4)){//user is part of committee and the proposal has been sent to committee
            $this->status = 3; // Proposal denied by committee
-       }
+           $sendmail = new Email();
+           $sendmail->sendMessage($this->userIDtoEmail($this->OwnerID), 'Your proposal has been denied by the committee', 'Hello '.$this->userIDtoFullName($this->OwnerID).', Your proposal has been denied by the committee. Please login to the IPRO proposal system to review the decision');
+        }
    }
    
    function saveComments($comment){
@@ -679,6 +700,19 @@ class Proposal {
        $row = $query->fetch_assoc();
        return $row['FName'].' '.$row['LName'];
    }
+   
+   static function userIDtoEmail($userID){
+       if(intval($userID) == 0){
+           exit;
+       }
+       $dbconnlocal = new Database();
+       $dbconnlocal = $dbconnlocal->getConnection();
+       $sql = "SELECT id,email FROM users WHERE id='".intval($userID)."'";
+       $query = $dbconnlocal->query($sql);
+       $row = $query->fetch_assoc();
+       return $row['email'];
+   }
+   
    
    function getComments(){
        //we will be pulling comments for this proposal

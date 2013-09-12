@@ -20,7 +20,10 @@
             echo '<a href="approvals.php" class="btn btn-primary navbar-btn">Approvals <span class="badge">'.Proposal::calculateMyApprovals().'</span></a>
                 ';
         }
-        echo '<div class="btn-group">
+        echo '
+            <a href="dashboard.php" class="btn btn-primary navbar-btn">Proposals</a>
+            <!-- since archives are not yet implemented we are disabling the drop down button 
+            <div class="btn-group">
                     <button type="button" class="btn btn-primary navbar-btn dropdown-toggle" data-toggle="dropdown">
                     Dasboard <span class="caret"></span>
                     </button>
@@ -29,6 +32,8 @@
                         <li><a href="archive.html">Archive</a></li>
                     </ul>
                 </div>
+                -->
+                <!-- Settings not yet implemented for users, changing this to just 
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary navbar-btn dropdown-toggle" data-toggle="dropdown">
                     User <span class="caret"></span>
@@ -38,7 +43,8 @@
                         <li class="divider"></li>
                     <li><a href="logout.php">Logout</a></li>
                     </ul>
-                </div>
+                </div> -->
+                <a href="logout.php" class="btn btn-primary navbar-btn">Logout</a>
              </nav>';
     }
     ?>
