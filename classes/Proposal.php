@@ -533,7 +533,7 @@ class Proposal {
    static function getCommitteeIDs(){
        $dbconnlocal = new Database();
        $dbconnlocal = $dbconnlocal->getConnection();
-       $sql = "SELECT id FROM users WHERE Level='4'";
+       $sql = "SELECT id FROM users WHERE Level='3'";
        $query = $dbconnlocal->query($sql);
        $committeeIDs = array();
        while($rows = $query->fetch_assoc()){
