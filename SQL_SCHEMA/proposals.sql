@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 10, 2013 at 10:28 PM
+-- Generation Time: Sep 13, 2013 at 06:58 AM
 -- Server version: 5.5.31
 -- PHP Version: 5.4.16
 
@@ -60,7 +60,6 @@ CREATE TABLE IF NOT EXISTS `proposals` (
   `CoInstructorEmail` varchar(255) NOT NULL,
   `Sponsor` varchar(255) NOT NULL,
   `ApprovingDean` int(9) NOT NULL,
-  `Disciplines` text NOT NULL,
   `Title` varchar(255) NOT NULL,
   `Problem` text NOT NULL,
   `Objective` text NOT NULL,
@@ -78,13 +77,13 @@ CREATE TABLE IF NOT EXISTS `proposals` (
 -- Dumping data for table `proposals`
 --
 
-INSERT INTO `proposals` (`ID`, `Instructor`, `InstructorEmail`, `CoInstructor`, `CoInstructorEmail`, `Sponsor`, `ApprovingDean`, `Disciplines`, `Title`, `Problem`, `Objective`, `Approach`, `Semester`, `Days`, `Time`, `CourseNumber`, `OwnerID`, `status`) VALUES
-(1, 'Bart Dworak', 'bdworak@hawk.iit.edu', 'Emanual.pdf', 'bdworak@hawk.iit.edu', 'Rima K.', 1, 'a:0:{}', 'Building better communities', 'Tasks are often blah blah blah', 'Blah blah', 'Blah blah blah', 'SPRING2014', 'a:0:{}', 'Evening', 0, 1, 2),
-(2, 'Bart Dworak', 'bdworak@hawk.iit.edu', 'Emanual.pdf', 'emanual@iit.pdf', 'Rima K.', 1, 'a:5:{i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;i:4;i:7;}', 'Why the coding cave needs more TV''s', 'lsdkmfsldkm', 'sdlfkmsfkldm', 'sldkfmsklm', 'SPRING2014', 'a:0:{}', 'Afternoon', 0, 1, 2),
-(3, 'Bart Dworak', 'bdworak@hawk.iit.edu', 'Emanual.pdf', 'emanual@iit.pdf', 'Rima K.', 1, 'a:3:{i:0;i:2;i:1;i:4;i:2;i:6;}', 'Bart is awesome, no?', 'lfksmsdkl', 'lsdkfsldkfm', 'vlskmdflkmf', 'SPRING2015', 'a:0:{}', 'Afternoon', 0, 1, 6),
-(4, 'bart dworak', 'bdworak@hawk.iit.edu', 'bart dworak', 'bdworak@hawk.iit.edu', 'Emmanuel MoneyBags Marcha', 1, 'a:0:{}', 'This is a test', 'This is an update to my test.', 'this is an updated objective version 1.5', '', 'SPRING2014', 'a:1:{i:0;i:1;}', 'Afternoon', 0, 1, 2),
-(5, 'instructor', 'instructor@gmaodm.com', 'coinstructor', 'instructor@gmaodm.com', 'The Sponsor', 1, 'a:0:{}', 'Test Proposal #1', 'The problem or issue idasdals', 'objectives...', 'approach M T TH Morning FALL 2014', 'FALL2014', 'a:3:{i:1;s:2:"on";i:3;s:2:"on";i:5;s:2:"on";}', 'Morning', 0, 1, 0),
-(6, 'instrutmf', 'instructor@gmaodm.com', 'coinstructor', 'instructor@gmaodm.com', 'the sponsor', 1, 'a:0:{}', 'My new proposal', 'This is a test proposal just testing', '12345', 'lkmlsdkfm', 'SUMMER2015', 'a:1:{i:3;s:2:"on";}', 'Evening', 0, 2, 2);
+INSERT INTO `proposals` (`ID`, `Instructor`, `InstructorEmail`, `CoInstructor`, `CoInstructorEmail`, `Sponsor`, `ApprovingDean`, `Title`, `Problem`, `Objective`, `Approach`, `Semester`, `Days`, `Time`, `CourseNumber`, `OwnerID`, `status`) VALUES
+(1, 'Bart Dworak', 'bdworak@hawk.iit.edu', 'Emanual.pdf', 'bdworak@hawk.iit.edu', 'Rima K.', 1, 'Building better communities', 'Tasks are often blah blah blah', 'Blah blah', 'Blah blah blah', 'SPRING2014', 'a:0:{}', 'Evening', 0, 1, 5),
+(2, 'Bart Dworak', 'bdworak@hawk.iit.edu', 'Emanual.pdf', 'bdworak@hawk.iit.edu', 'Rima K.', 1, 'Why the coding cave needs more TV''s', '16 tv''s instead of just 1.', 'we are going to spend alot of money to do fun things.', 'sldkfmsklm', 'SPRING2014', 'a:5:{i:1;s:2:"on";i:2;s:2:"on";i:3;s:2:"on";i:4;s:2:"on";i:5;s:2:"on";}', 'Afternoon', 0, 1, 5),
+(3, 'Bart Dworak', 'bdworak@hawk.iit.edu', 'Emanual.pdf', 'emanual@iit.pdf', 'Rima K.', 1, 'Bart is awesome, no?', 'lfksmsdkl', 'lsdkfsldkfm', 'vlskmdflkmf', 'SPRING2015', 'a:0:{}', 'Afternoon', 0, 1, 6),
+(4, 'bart dworak', 'bdworak@hawk.iit.edu', 'bart dworak', 'bdworak@hawk.iit.edu', 'Emmanuel MoneyBags Marcha', 1, 'This is a test', 'This is an update to my test.', 'this is an updated objective version 1.5', '', 'SPRING2014', 'a:1:{i:0;i:1;}', 'Afternoon', 0, 1, 2),
+(5, 'instructor', 'instructor@gmaodm.com', 'coinstructor', 'instructor@gmaodm.com', 'The Sponsor', 1, 'Test Proposal #1', 'The problem or issue idasdals', 'objectives...', 'approach M T TH Morning FALL 2014', 'FALL2014', 'a:3:{i:1;s:2:"on";i:3;s:2:"on";i:5;s:2:"on";}', 'Morning', 0, 1, 5),
+(6, 'instrutmf', 'instructor@gmaodm.com', 'coinstructor', 'instructor@gmaodm.com', 'the sponsor', 1, 'My new proposal', 'This is a test proposal just testing', '12345', 'lkmlsdkfm', 'SUMMER2015', 'a:1:{i:3;s:2:"on";}', 'Evening', 0, 2, 5);
 
 -- --------------------------------------------------------
 
@@ -126,7 +125,24 @@ CREATE TABLE IF NOT EXISTS `proposal_comments` (
   `userID` int(9) NOT NULL,
   `proposalID` int(9) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+
+--
+-- Dumping data for table `proposal_comments`
+--
+
+INSERT INTO `proposal_comments` (`id`, `comment`, `timestamp`, `userID`, `proposalID`) VALUES
+(4, 'This is a great proposal', 1378859775, 2, 6),
+(5, 'The committee approves this request.', 1378860112, 3, 6),
+(6, 'Bad Proposal', 1378917477, 2, 2),
+(7, '', 1378917566, 2, 2),
+(8, 'This is fine.', 1378919104, 2, 2),
+(9, 'This is not going to happen. add more tv''s''s''s''s''s''s.s''.s''.s''.s''.s''.s', 1378919278, 3, 2),
+(10, 'yes yes i approve of the Tv''s''s''s''s''', 1378919512, 2, 2),
+(11, 'nono, 16 TV;''s', 1378919531, 3, 2),
+(12, 'This is great!', 1378932592, 2, 5),
+(13, 'Committee approved!!!', 1378932694, 3, 5),
+(14, 'Great Proposal. Let''s schedule it up.', 1378954724, 3, 1);
 
 -- --------------------------------------------------------
 
