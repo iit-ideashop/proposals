@@ -540,7 +540,7 @@ class Proposal {
        //We are going to pull the array found in the database from approvingDean
        $dbconnlocal = new Database();
        $dbconnlocal = $dbconnlocal->getConnection();
-       $sql = "SELECT deanEmail FROM deans WHERE userID='".intval($approvingDeanID)."'";
+       $sql = "SELECT deanEmail FROM deans WHERE id='".intval($approvingDeanID)."'";
        $query = $dbconnlocal->query($sql);
        $result = $query->fetch_assoc();
        return unserialize($result['deanEmail']);
