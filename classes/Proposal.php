@@ -532,6 +532,16 @@ class Proposal {
        //We are going to set this proposal's status to "sent to dean"
        
    }
+   //TODO: IMPLEMENT THIS FUNCTION
+   static function getDeanProposalInvolvement(){
+       return false;
+       //We have to make sure that the userLevel is 2 for dean or 9 for admin
+       $dbconnlocal = new Database();
+       $dbconnlocal = $dbconnlocal->getConnection();
+       $sql = "SELECT id FROM proposals WHERE ApprovingDean='' AND status > '0'";
+   }
+   
+   
    
    static function getApprovingDeanEmailArray($approvingDeanID){
        if(intval($approvingDeanID) == 0){
