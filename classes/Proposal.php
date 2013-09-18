@@ -516,7 +516,10 @@ class Proposal {
        if(($this->status == 0)||($this->status == 1)){
            $this->status = 2; // Submit to the dean
            $sendmail = new Email();
-           $sendmail->sendMessage($this->userIDtoEmail($this->ApprovingDean), 'You have a Proposal waiting to be approved', 'Hello '.$this->userIDtoFullName($this->ApprovingDean).', You have a proposal waiting to be approved in your queue. Please login to the IPRO Proposal system to approve this IPRO proposal.');
+           $deanArray = Proposal::getApprovingDeanEmailArray($this->ApprovingDean);
+           foreach ($deanArray as $value) {
+               $sendmail->sendMessage($value, 'You have a Proposal waiting to be approved', 'Hello '.$this->userIDtoFullName($this->ApprovingDean).', You have a proposal waiting to be approved in your queue. Please login to the IPRO Proposal system to approve this IPRO proposal.');           
+           }
        }elseif($this->status == 3){ // proposal was denied by committee, we are going to submit directly to them
            $this->status = 4;
            $sendmail = new Email();
@@ -528,6 +531,19 @@ class Proposal {
        }
        //We are going to set this proposal's status to "sent to dean"
        
+   }
+   
+   static function getApprovingDeanEmailArray($approvingDeanID){
+       if(intval($approvingDeanID) == 0){
+           return false;
+       }
+       //We are going to pull the array found in the database from approvingDean
+       $dbconnlocal = new Database();
+       $dbconnlocal = $dbconnlocal->getConnection();
+       $sql = "SELECT deanEmail FROM deans WHERE userID='".intval($approvingDeanID)."'";
+       $query = $dbconnlocal->query($sql);
+       $result = $query->fetch_assoc();
+       return unserialize($result['deanEmail']);
    }
    
    static function getCommitteeIDs(){
