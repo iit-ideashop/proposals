@@ -19,6 +19,7 @@ class Proposal {
     private $CourseNumber; // This will be 0 by default and when approved will be assigned an IPRO number IPRO 397-###
     private $OwnerID;
     private $status;
+    private $dateLastModified;  //format date("Y-m-d H:i:s")
     private $dbconn;
     
     
@@ -51,6 +52,7 @@ class Proposal {
                 $this->Time = $rows['Time'];
                 $this->CourseNumber = $rows['CourseNumber'];
                 $this->OwnerID = $rows['OwnerID'];
+                $this->dateLastModified = $rows['dateLastModified'];
                 $this->status = $rows['status'];
             }
         }else{
@@ -58,7 +60,7 @@ class Proposal {
             $this->Days = array(0);
             $this->Semester = 0;
             $this->ApprovingDean = 0;
-
+            $this->dateLastModified = date("Y-m-d H:i:s");
             $this->OwnerID = $_SESSION['proposal_userID'];
             $this->CourseNumber = 0;
             $this->status = 0;
@@ -72,8 +74,6 @@ class Proposal {
         $sql ="SELECT ID FROM proposals WHERE OwnerID='".intval($_SESSION['proposal_userID'])."'";
         $result = $dbconnlocal->query($sql);
         $proposalArray = array();
-        
-        
         while($row = $result->fetch_assoc()){
             //into a temporary object and then into the array
             $tempPropObj = new Proposal($row['ID']);
@@ -131,7 +131,7 @@ class Proposal {
        if($this->ID === 0){
            //New Proposal
            //Insert the new proposal into the database
-           $sql = "INSERT INTO proposals(Instructor,InstructorEmail,CoInstructor,CoInstructorEmail,Sponsor,ApprovingDean,Title,Problem,Objective,Approach,Semester,Days,Time,CourseNumber,OwnerID,status) 
+           $sql = "INSERT INTO proposals(Instructor,InstructorEmail,CoInstructor,CoInstructorEmail,Sponsor,ApprovingDean,Title,Problem,Objective,Approach,Semester,Days,Time,CourseNumber,OwnerID,status,dateLastModified) 
                     VALUES('".$this->dbconn->real_escape_string($this->Instructor)."',
                             '".$this->dbconn->real_escape_string($this->InstructorEmail)."',
                             '".$this->dbconn->real_escape_string($this->CoInstructor)."',
@@ -147,7 +147,8 @@ class Proposal {
                             '".$this->dbconn->real_escape_string($this->Time)."',
                             '".$this->dbconn->real_escape_string($this->CourseNumber)."',
                             '".$this->dbconn->real_escape_string($this->OwnerID)."',
-                            '".$this->dbconn->real_escape_string($this->status)."')";
+                            '".$this->dbconn->real_escape_string($this->status)."',
+                                '".date("Y-m-d H:i:s")."')";
            $query = $this->dbconn->query($sql);
            $this->ID = $this->getRecentID();
        }else{
@@ -167,7 +168,8 @@ class Proposal {
                Time='".$this->dbconn->real_escape_string($this->Time)."',
                CourseNumber='".$this->dbconn->real_escape_string($this->CourseNumber)."',
                OwnerID='".$this->dbconn->real_escape_string($this->OwnerID)."',
-               status='".$this->dbconn->real_escape_string($this->status)."' WHERE ID='".$this->dbconn->real_escape_string($this->ID)."' LIMIT 1";
+               status='".$this->dbconn->real_escape_string($this->status)."',
+                   dateLastModified='".date("Y-m-d H:i:s")."' WHERE ID='".$this->dbconn->real_escape_string($this->ID)."' LIMIT 1";
            $query = $this->dbconn->query($sql);
        }
    }
@@ -348,6 +350,10 @@ class Proposal {
    
    function setStatus($newStatus){
        $this->status = $newStatus;
+   }
+   
+   function getDateLastModified(){
+       return $this->dateLastModified;
    }
    
    static function convertStatusToText($statusID){
@@ -756,5 +762,29 @@ class Proposal {
        }
        return $CommentsArray;
    }
+   
+    function createRevision(){
+        //This function creates a revision of the current proposal to the proposal_revisions database
+        $revisionSql = "INSERT INTO `proposals_revisions`(`proposalID`, `Instructor`, `InstructorEmail`, `CoInstructor`, `CoInstructorEmail`, `Sponsor`, `ApprovingDean`, `Title`, `Problem`, `Objective`, `Approach`, `Semester`, `Days`, `Time`, `CourseNumber`, `OwnerID`, `status`, `dateLastModified`) VALUES 
+            (".$this->dbconn->real_escape_string($this->ID).",
+            ".$this->dbconn->real_escape_string($this->Instructor).",
+            ".$this->dbconn->real_escape_string($this->InstructorEmail).",
+            ".$this->dbconn->real_escape_string($this->CoInstructor).",
+            ".$this->dbconn->real_escape_string($this->CoInstructorEmail).",
+            ".$this->dbconn->real_escape_string($this->Sponsor).",
+            ".$this->dbconn->real_escape_string($this->ApprovingDean).",
+            ".$this->dbconn->real_escape_string($this->Title).",
+            ".$this->dbconn->real_escape_string($this->Problem).",
+            ".$this->dbconn->real_escape_string($this->Objective).",
+            ".$this->dbconn->real_escape_string($this->Approach).",
+            ".$this->dbconn->real_escape_string($this->Semester).",
+            ".$this->dbconn->real_escape_string($this->Days).",
+            ".$this->dbconn->real_escape_string($this->Time).",
+            ".$this->dbconn->real_escape_string($this->CourseNumber).",
+            ".$this->dbconn->real_escape_string($this->OwnerID).",
+            ".$this->dbconn->real_escape_string($this->status).",
+            ".date("Y-m-d H:i:s").")";
+        $this->dbconn->query($revisionSql);
+    }
 }
 ?>
