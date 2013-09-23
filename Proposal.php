@@ -117,7 +117,7 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Problem or Issue
-              <a href="faq.html#problem-issue">
+              <a href="faq.html#problem-issue" target="_blank">
                 <span class="glyphicon glyphicon-info-sign"></span>
               </a>
             </label>
@@ -126,7 +126,7 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Objective
-              <a href="faq.html#objective">
+              <a href="faq.html#objective" target="_blank">
                 <span class="glyphicon glyphicon-info-sign"></span>
               </a>
             </label>
@@ -135,7 +135,7 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Approach
-              <a href="faq.html#approach">
+              <a href="faq.html#approach" target="_blank">
                 <span class="glyphicon glyphicon-info-sign"></span>
               </a>
             </label>
@@ -148,7 +148,7 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Primary Instructor Information
-              <a href="faq.html#primary-instructor">
+              <a href="faq.html#primary-instructor" target="_blank">
                 <span class="glyphicon glyphicon-info-sign"></span>
               </a>
             </label>
@@ -160,7 +160,7 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Co-Instructor Information
-              <a href="faq.html#co-instructor">
+              <a href="faq.html#co-instructor" target="_blank">
                 <span class="glyphicon glyphicon-info-sign"></span>
               </a>
             </label>
@@ -172,7 +172,7 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               College Dean
-              <a href="faq.html#dean">
+              <a href="faq.html#dean" target="_blank">
                 <span class="glyphicon glyphicon-info-sign"></span>
               </a>
             </label>
@@ -181,7 +181,7 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Sponsor Information
-              <a href="faq.html#sponsor">
+              <a href="faq.html#sponsor" target="_blank">
                 <span class="glyphicon glyphicon-info-sign"></span>
               </a>
             </label>
@@ -191,7 +191,7 @@ include_once('include/nav.php');
           <div class="form-group">
             <label>
               Class Timing
-              <a href="faq.html#timing">
+              <a href="faq.html#timing" target="_blank">
                 <span class="glyphicon glyphicon-info-sign"></span>
               </a>
               <span class="help-text">(we will try our best to accommodate)</span>
@@ -225,12 +225,7 @@ include_once('include/nav.php');
               </label>
             </div>
             <div class="form-group">
-              <label>
-                Available Semesters
-                <a href="faq.html#semesters">
-                  <span class="glyphicon glyphicon-info-sign"></span>
-                </a>
-              </label>
+              
               <?php echo Proposal::generateNextSemesterDropdown($pageProposal->getSemester()); ?>
             </div>
           </div>
