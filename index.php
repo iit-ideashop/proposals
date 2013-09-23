@@ -42,13 +42,11 @@ include_once('include/nav.php');
         </p>
       </div>
       <div class="col-lg-4">
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-          <!-- Signup is currently disabled
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">  
             <h4>
             New user?
-            <a href="signup.html">Sign up now!</a>
+            <a href="signup.php">Sign up now!</a>
           </h4>
-          -->
           <div class="form-group">
             <input type="text" class="form-control input-large" name="username" id="username" placeholder="Username">
           </div>

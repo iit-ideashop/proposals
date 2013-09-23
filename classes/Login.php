@@ -70,6 +70,65 @@ class Login{
         header("Location:dashboard.php");
         exit;
     }
+    function usernameAvailable($username){
+        //Checks to see if a username exists. Return true if its not in use
+        $sql = "SELECT id FROM users WHERE Username='".mysqli_real_escape_string($this->connection,$username)."' LIMIT 1";
+        $query = $this->connection->query($sql);
+        if($query->num_rows != 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    
+    function createNewUser($fname,$lname,$username,$password,$email){
+        //We are going to do some error checking 
+        if($username == ''){
+            //Blank username
+            FlashBang::addFlashBang("Red", "Form Error", "Username cannot be blank");
+            return false;
+        }
+        if($password==''){
+            //Blank Password
+            FlashBang::addFlashBang("Red", "Form Error", "Password cannot be blank");
+            return false;
+        }
+        if($fname==''){
+            //Blank first name
+            FlashBang::addFlashBang("Red", "Form Error", "First Name cannot be blank");
+            return false;
+        }
+        if($lname==''){
+            //Blank last name
+            FlashBang::addFlashBang("Red", "Form Error", "Last Name cannot be blank");
+            return false;
+        }
+        if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+            //Email failed validation
+            FlashBang::addFlashBang("Red", "Form Error", "Your email failed validation. Please fix your email address");
+            return false;
+        }
+        //Next we check if the username is available. if it is we make the account
+        if($this->usernameAvailable($username)){
+            $fname = mysqli_real_escape_string($this->connection,$fname);
+            $lname = mysqli_real_escape_string($this->connection,$lname);
+            $username = mysqli_real_escape_string($this->connection,$username);
+            $email = mysqli_real_escape_string($this->connection,$email);
+            $sql = "INSERT INTO users(FName,LName,Username,Password,Email,Level) 
+                VALUES('".$fname."',
+                    '".$lname."',
+                    '".$username."',
+                    '".md5($password)."',
+                    '".$email."',
+                    '1')";
+            $query = $this->connection->query($sql);
+            return true;
+        }else{
+            FlashBang::addFlashBang("Red", "Form Error", "Username is already in use.");
+            return false;
+        }
+    }
 }
 
 
