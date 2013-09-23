@@ -123,6 +123,8 @@ class Login{
                     '".$email."',
                     '1')";
             $query = $this->connection->query($sql);
+            $emailobj = new Email();
+            $emailobj->sendMessage($email, '[IPRO Proposals] Account Created', 'Hello '.$fname.' '.$lname.', Your account with username '.$username.' and password '.$password.' has been created. You can now use this account to sign into the IPRO Proposal system.');
             return true;
         }else{
             FlashBang::addFlashBang("Red", "Form Error", "Username is already in use.");
