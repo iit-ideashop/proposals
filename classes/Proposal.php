@@ -187,7 +187,10 @@ class Proposal {
            if(($rows['id'] == $selectedID)&&($selectedID != 0)){
                $selected='selected="selected"';
            }
-           $output .='<option '.$selected.' value="'.$rows['id'].'">'.$rows['deanName'].' - '.$rows['school'].'</option>';
+           if($rows['deanName'] != ''){
+               $deanName = $rows['deanName'].' - ';
+           }
+           $output .='<option '.$selected.' value="'.$rows['id'].'">'.$deanName.$rows['school'].'</option>';
        }
        $output .= '</select>';
        return $output;
