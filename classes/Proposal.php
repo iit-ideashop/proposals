@@ -187,6 +187,7 @@ class Proposal {
            if(($rows['id'] == $selectedID)&&($selectedID != 0)){
                $selected='selected="selected"';
            }
+           $deanName = '';
            if($rows['deanName'] != ''){
                $deanName = $rows['deanName'].' - ';
            }
@@ -624,6 +625,18 @@ class Proposal {
            return 'Error';
        }
    }
+   
+   function getDeanSchool(){
+       $deanID = $this->ApprovingDean;
+       if(intval($deanID) != 0){
+           $sql = "SELECT school FROM deans WHERE id='".intval($deanID)."'";
+           $result = $this->dbconn->query($sql);
+           $row = $result->fetch_assoc();
+           return $row['school'];
+       }else{
+           return 'Error';
+       }
+   }   
 
    
    function displayDays(){
