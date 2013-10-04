@@ -186,6 +186,7 @@ include_once('include/nav.php');
               </a>
             </label>
             <input type="text" class="form-control" name="sponsor" placeholder="Sponsor" value="<?php echo $pageProposal->getSponsor(); ?>">
+            <a class="btn btn-link" href="include/docs/IPRO_Sponsorship_Agreement.pdf" target="_blank">Sponsorship agreement</a>
           </div>
 
           <div class="form-group">
