@@ -13,6 +13,16 @@ $pageProposal;
 if(intval(@$_GET['proposalID']) != 0){
     $pageProposal = new Proposal($_GET['proposalID']);
 }
+/*
+//We have to make sure the user is allowed to see this proposal. So if it is Level 0 or 1 the user has to be owner
+if((($pageProposal->getStatus() == 0)||($pageProposal->getStatus() == 1))&&($SESSION['proposal_userID'] != $pageProposal->getOwnerID())){
+    FlashBang::addFlashBang('Red', 'Access Denied', 'Based on the proposals current status');
+    header("Location:dashboard.php");  
+    exit;
+}
+
+*/
+
 //Login has been checked and proposal has been loaded, next lets see if there are any actions to be done
 if(@$_GET['action'] == 'approvedeny'){
     //We are either approving or denying a proposal application
@@ -107,7 +117,7 @@ include_once('include/nav.php');
         <h5>Co-Instructor</h5>
         <p><?php echo $pageProposal->getCoInstructor(); ?> - <?php echo $pageProposal->getCoInstructorEmail(); ?></p>
         <h5>Dean</h5>
-        <p><?php echo $pageProposal->getDeanName(); ?> - <?php echo $pageProposal->getDeanEmail(); ?></p>
+        <p><?php echo $pageProposal->getDeanSchool(); ?></p>
         <h5>Scheduling</h5>
         <p>Time: <?php echo $pageProposal->getTime(); ?><br>
             Days: <?php echo $pageProposal->displayDays(); ?><br>

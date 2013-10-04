@@ -187,7 +187,11 @@ class Proposal {
            if(($rows['id'] == $selectedID)&&($selectedID != 0)){
                $selected='selected="selected"';
            }
-           $output .='<option '.$selected.' value="'.$rows['id'].'">'.$rows['deanName'].' - '.$rows['school'].'</option>';
+           $deanName = '';
+           if($rows['deanName'] != ''){
+               $deanName = $rows['deanName'].' - ';
+           }
+           $output .='<option '.$selected.' value="'.$rows['id'].'">'.$deanName.$rows['school'].'</option>';
        }
        $output .= '</select>';
        return $output;
@@ -524,7 +528,7 @@ class Proposal {
            $sendmail = new Email();
            $deanArray = Proposal::getApprovingDeanEmailArray($this->ApprovingDean);
            foreach ($deanArray as $value) {
-               $sendmail->sendMessage($value, 'You have a Proposal waiting to be approved', 'Hello '.$this->userIDtoFullName($this->ApprovingDean).', You have a proposal waiting to be approved in your queue. Please login to the IPRO Proposal system to approve this IPRO proposal.');           
+               $sendmail->sendMessage($value, 'You have a Proposal waiting to be approved', 'Hello '.$this->userIDtoFullName(Proposal::getDeanUserIDByDeanID($this->ApprovingDean)).', You have a proposal waiting to be approved in your queue. Please login to the IPRO Proposal system to approve this IPRO proposal.');           
            }
        }elseif($this->status == 3){ // proposal was denied by committee, we are going to submit directly to them
            $this->status = 4;
@@ -532,22 +536,33 @@ class Proposal {
            $committeeIDs = $this->getCommitteeIDs();
            for($i =0;$i < count($committeeIDs); $i++){
                 $sendmail->sendMessage($this->userIDtoEmail($committeeIDs[$i]), 'You have a Proposal waiting to be approved', 'Hello '.$this->userIDtoFullName($committeeIDs[$i]).', You have a proposal waiting to be approved in your queue. Please login to the IPRO Proposal system to approve this IPRO proposal.');
-
            }
        }
        //We are going to set this proposal's status to "sent to dean"
        
    }
-   //TODO: IMPLEMENT THIS FUNCTION
+   
    static function getDeanProposalInvolvement(){
-       return false;
-       //We have to make sure that the userLevel is 2 for dean or 9 for admin
+       //We have to make sure that the userLevel is 2
+       if($_SESSION['proposal_UserLevel'] != '2'){
+           return false;
+       }
        $dbconnlocal = new Database();
        $dbconnlocal = $dbconnlocal->getConnection();
-       $sql = "SELECT id FROM proposals WHERE ApprovingDean='' AND status > '0'";
+       //Pull all of the proposals where the Approving Dean is me.
+       
+       $sql = "SELECT ID FROM proposals WHERE ApprovingDean='".Proposal::getDeanUserIDByDeanID($_SESSION['proposal_userID'])."' AND status > '0'";
+       $query = $dbconnlocal->query($sql);
+       $proposalArray = array();
+       while($rows = $query->fetch_assoc()){
+           //into a temporary object and then into the array
+            $tempPropObj = new Proposal($row['ID']);
+            array_push($proposalArray, $tempPropObj);
+            $tempPropObj = null;
+       }
+       return $proposalArray;
    }
-   
-   
+  
    
    static function getApprovingDeanEmailArray($approvingDeanID){
        if(intval($approvingDeanID) == 0){
@@ -560,6 +575,19 @@ class Proposal {
        $query = $dbconnlocal->query($sql);
        $result = $query->fetch_assoc();
        return unserialize($result['deanEmail']);
+   }
+   
+   static function getDeanUserIDByDeanID($deanID){
+       if(intval($deanID) == 0){
+           return false;
+       }
+       //grab the userID field belonging to the DeanID
+       $dbconnlocal = new Database();
+       $dbconnlocal = $dbconnlocal->getConnection();
+       $sql = "SELECT userID FROM deans WHERE id='".intval($deanID)."'";
+       $query = $dbconnlocal->query($sql);
+       $result = $query->fetch_assoc();
+       return $result['userID'];
    }
    
    static function getCommitteeIDs(){
@@ -597,6 +625,18 @@ class Proposal {
            return 'Error';
        }
    }
+   
+   function getDeanSchool(){
+       $deanID = $this->ApprovingDean;
+       if(intval($deanID) != 0){
+           $sql = "SELECT school FROM deans WHERE id='".intval($deanID)."'";
+           $result = $this->dbconn->query($sql);
+           $row = $result->fetch_assoc();
+           return $row['school'];
+       }else{
+           return 'Error';
+       }
+   }   
 
    
    function displayDays(){
@@ -644,6 +684,8 @@ class Proposal {
            return $approvalCount;
        }
    }
+   
+   
    
    static function getMyApprovals(){
        if(($_SESSION['proposal_LoggedIn'])&&($_SESSION['proposal_UserLevel'] == 2)){
@@ -701,10 +743,12 @@ class Proposal {
    function denyProposal(){
        if(($_SESSION['proposal_UserLevel'] == 2)&&($this->status == 2)){ //user is a dean and the proposal status is level 2 "sent to dean"
            $this->status = 1;//Proposal denied by dean
+           $this->createRevision();
            $sendmail = new Email();
            $sendmail->sendMessage($this->userIDtoEmail($this->OwnerID), 'Your proposal has been denied by you dean', 'Hello '.$this->userIDtoFullName($this->OwnerID).', Your proposal has been denied by your dean. Please login to the IPRO proposal system to review the decision');           
        }elseif(($_SESSION['proposal_UserLevel'] == 3)&&($this->status == 4)){//user is part of committee and the proposal has been sent to committee
            $this->status = 3; // Proposal denied by committee
+           $this->createRevision();
            $sendmail = new Email();
            $sendmail->sendMessage($this->userIDtoEmail($this->OwnerID), 'Your proposal has been denied by the committee', 'Hello '.$this->userIDtoFullName($this->OwnerID).', Your proposal has been denied by the committee. Please login to the IPRO proposal system to review the decision');
         }

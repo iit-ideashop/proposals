@@ -37,7 +37,7 @@ if(isset($_GET['proposalID'])){
     }
     //Next we verify that the proposal is in status 0 or 1, if it is not, we are not supposed to be able to edit it
     if(($pageProposal->getStatus() != 0)&&($pageProposal->getStatus() !=1)&&($pageProposal->getStatus() !=3)){
-        FlashBang::addFlashBang("Green", "Awaiting Approval", "This proposal has been sent to appropriate parties for approval. Edits are not allowed once the proposal has been submitted. Proposal status:".$pageProposal->getStatus());
+        FlashBang::addFlashBang("Green", "Awaiting Approval", "This proposal has been sent to appropriate parties for approval. Edits are not allowed once the proposal has been submitted.");
         header("Location:dashboard.php");
         exit;
     }
