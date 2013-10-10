@@ -167,7 +167,7 @@ include_once('include/nav.php');
             <input type="text" class="form-control" name="coInstructorName" placeholder="Co-Instructor Name" value="<?php echo $pageProposal->getCoInstructor(); ?>">
           </div>
           <div class="form-group">
-            <input type="email" class="form-control" name="coInstructorEmail" placeholder="Co-Instructor Email" value="<?php echo $pageProposal->getInstructorEmail(); ?>">
+            <input type="email" class="form-control" name="coInstructorEmail" placeholder="Co-Instructor Email" value="<?php echo $pageProposal->getCoInstructorEmail(); ?>">
           </div>
           <div class="form-group">
             <label>
