@@ -14,6 +14,11 @@
     }elseif(@$_SESSION['proposal_LoggedIn'] == 1){
         echo '<nav class="pull-right">
              ';
+        
+        //Here we will check if the user is an admin and show the admin link if applicable
+        if($_SESSION['proposal_UserLevel'] == 9){
+            echo '<a href="admin.php" class="btn btn-primary navbar-btn">Admin</a>';
+        }
         //Here we will do some calculation of approvals and if the link should be shown
         //Approvals will only be shown to committee and deans so
         if(($_SESSION['proposal_UserLevel'] == 2)||($_SESSION['proposal_UserLevel'] == 3)){

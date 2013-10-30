@@ -83,6 +83,26 @@ class Proposal {
         return $proposalArray;
     }
     
+    static function getAllProposals(){
+        //We have to make sure that the user is an admin to use this function
+        if($_SESSION['proposal_UserLevel'] != 9){
+            return false;
+        }
+        //This function returns an array of proposal objects which can be used in a variety of ways....
+        $dbconnlocal = new Database();
+        $dbconnlocal = $dbconnlocal->getConnection();
+        $sql ="SELECT ID FROM proposals";
+        $result = $dbconnlocal->query($sql);
+        $proposalArray = array();
+        while($row = $result->fetch_assoc()){
+            //into a temporary object and then into the array
+            $tempPropObj = new Proposal($row['ID']);
+            array_push($proposalArray, $tempPropObj);
+            $tempPropObj = null;
+        }
+        return $proposalArray;
+    }
+    
     
     function getRecentID(){
         //This function will get the ID of the recently inserted record in the database
