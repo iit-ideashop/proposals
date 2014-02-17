@@ -35,7 +35,7 @@ include_once('include/nav.php');
   <div class="container jumbotron">
     <div class="row text-center">
       <div class="col-lg-8">
-        <h1>Proposals, not paperwork</h1>
+        <h1>IPRO Proposal System</h1>
         <p>
           Welcome to IPRO's new proposal system meant to ease the process and enhance the experience.
           Login to get started!
