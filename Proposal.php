@@ -156,8 +156,8 @@ include_once('include/nav.php');
           </div>
           <div class="form-group">
             <input type="email" class="form-control" name="instructorEmail" placeholder="Instructor Email" value="<?php echo $pageProposal->getInstructorEmail(); ?>">
+            <a class="btn btn-link" href="include/docs/IPRO_instructor_Agreement.pdf" target="_blank">IPRO Instructor Agreement</a>
           </div>
-            <p><span class="glyphicon glyphicon-paperclip"></span> <a href="include/docs/IPRO_instructor_Agreement.pdf">IPRO Instructor Agreement</a></p>
           <div class="form-group">
             <label>
               Co-Instructor Information
