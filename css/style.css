@@ -117,3 +117,7 @@ h3 {
   margin-top: 1.5em; }
 #faq p {
   font-size: .75em; }
+
+.jumbotron ul li{
+    font-size: 15px;
+}
