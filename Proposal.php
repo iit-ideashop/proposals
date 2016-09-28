@@ -7,7 +7,12 @@ if((isset($_POST['saveDraft']))||(isset($_POST['submitForApproval']))){
     if((@$_POST['newFlag'] == 1)||(intval(@$_POST['proposalID']) == 0)){
         $proposal = new Proposal(0);
         $proposal->readProposalfromForm();
-        if(isset($_POST['submitForApproval'])){
+        if($proposal->getApprovingDean() == "0"){
+		FlashBang::addFlashBang("Red", "Error!", "You must select a dean as the approver of this project!");
+        	header("Location:Proposal.php?newFlag=1");
+        exit;
+	}
+	if(isset($_POST['submitForApproval'])){
             $proposal->submitForApproval();
         }
         $proposal->saveToDatabase();

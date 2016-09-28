@@ -34,7 +34,7 @@ class Email {
 	$mailText = <<<EOT
 Hello $deanName, 
 
-Please be advised that you have an IPRO proposal submitted by a faculty member in your college that is awaiting your review and approval. Please login to the IPRO Proposal System using your login credentials. 
+Please be advised that you have an IPRO proposal submitted by a faculty member in your college that is awaiting your review and approval. Please login to the IPRO Proposal System using your login credentials. If you have forgotten your user name and password, please email me at jacobius@iit.edu.
 
 URL: https://ipro.iit.edu/proposals/
 

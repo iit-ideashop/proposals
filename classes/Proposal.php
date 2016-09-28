@@ -202,12 +202,19 @@ class Proposal {
        $dbconnlocal = $dbconnlocal->getConnection();
        $result = $dbconnlocal->query($sql);
        $output = '<select name="approvingDean" class="form-control">';
-       while($rows = $result->fetch_assoc()){
+       $selection = 0;
+	while($rows = $result->fetch_assoc()){
            $selected = '';
            if(($rows['id'] == $selectedID)&&($selectedID != 0)){
                $selected='selected="selected"';
            }
-           $deanName = '';
+	else{
+	   if($selection == 0){
+           $output .='<option selected="selected" value="0">Select a dean</option>';
+	   $selection = 1;
+	   }
+       	}
+	     $deanName = '';
            if($rows['deanName'] != ''){
                $deanName = $rows['deanName'].' - ';
            }
