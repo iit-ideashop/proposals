@@ -35,10 +35,11 @@ Login::loginCheck(9);
        <?php
        for($i=0;$i<count($proposalArray);$i++){
            echo '<li class="proposal-item row">
-                    <div class="col-lg-7">
+                    <div class="col-lg-5">
                         <a href="showProposal.php?proposalID='.$proposalArray[$i]->getID().'"><span>'.$proposalArray[$i]->getTitle().'</span></a>
                     </div>
-                    <div class="col-lg-5 text-right">
+			<div class="col-lg-4">Proposal Date: '.date("m/d/Y h:i a",strtotime($proposalArray[$i]->getDateLastModified())).'</div>
+                    <div class="col-lg-3 text-right">
                         <span class="label '.Proposal::convertStatusToClassColor($proposalArray[$i]->getStatus()).'">'.Proposal::convertStatusToText($proposalArray[$i]->getStatus()).'</span>
                     <a class="btn btn-default" style="color:white;" href="showProposal.php?proposalID='.$proposalArray[$i]->getID().'" >View</a>
                     </div>
