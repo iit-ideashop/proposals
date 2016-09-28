@@ -548,14 +548,14 @@ class Proposal {
            $sendmail = new Email();
            $deanArray = Proposal::getApprovingDeanEmailArray($this->ApprovingDean);
            foreach ($deanArray as $value) {
-               $sendmail->sendMessage($value, 'You have a Proposal waiting to be approved', 'Hello '.$this->userIDtoFullName(Proposal::getDeanUserIDByDeanID($this->ApprovingDean)).', You have a proposal waiting to be approved in your queue. Please login to the IPRO Proposal system to approve this IPRO proposal.');           
+               $sendmail->approvalMail($value,$this->userIDtoFullName(Proposal::getDeanUserIDByDeanID($this->ApprovingDean)));           
            }
        }elseif($this->status == 3){ // proposal was denied by committee, we are going to submit directly to them
            $this->status = 4;
            $sendmail = new Email();
            $committeeIDs = $this->getCommitteeIDs();
            for($i =0;$i < count($committeeIDs); $i++){
-                $sendmail->sendMessage($this->userIDtoEmail($committeeIDs[$i]), 'You have a Proposal waiting to be approved', 'Hello '.$this->userIDtoFullName($committeeIDs[$i]).', You have a proposal waiting to be approved in your queue. Please login to the IPRO Proposal system to approve this IPRO proposal.');
+                $sendmail->approvalMail($this->userIDtoEmail($committeeIDs[$i]), $this->userIDtoFullName($committeeIDs[$i]));
            }
        }
        //We are going to set this proposal's status to "sent to dean"
