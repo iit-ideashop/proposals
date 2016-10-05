@@ -47,6 +47,11 @@ include_once('include/nav.php');
             New user?
             <a href="signup.php">Sign up now!</a>
           </h4>
+	  <h4>
+            Forgot Password?
+            <a href="usermod.php">Reset Password</a>
+          </h4>
+
           <div class="form-group">
             <input type="text" class="form-control input-large" name="username" id="username" placeholder="Username">
           </div>

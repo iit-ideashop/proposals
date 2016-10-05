@@ -13,6 +13,7 @@
               </nav>';
     }elseif(@$_SESSION['proposal_LoggedIn'] == 1){
         echo '<nav class="pull-right">
+	      <a href="usermod.php" class="btn btn-primary navbar-btn">Change Password</a>
              ';
         
         //Here we will check if the user is an admin and show the admin link if applicable

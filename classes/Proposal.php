@@ -601,7 +601,7 @@ class Proposal {
        $sql = "SELECT deanEmail FROM deans WHERE id='".intval($approvingDeanID)."'";
        $query = $dbconnlocal->query($sql);
        $result = $query->fetch_assoc();
-       return unserialize($result['deanEmail']);
+       return str_getcsv($result['deanEmail']);
    }
    
    static function getDeanUserIDByDeanID($deanID){
