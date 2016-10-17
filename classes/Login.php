@@ -21,7 +21,7 @@ class Login{
 			//user found
 			$user = $loginResult->fetch_assoc();
 			if(password_verify($password, $user['Password'])){
-			//success with new hash algo
+				//success with new hash algo
 				$_SESSION['proposal_userID'] = $user['id'];
 				$_SESSION['proposal_FName'] = $user['FName'];
 				$_SESSION['proposal_LName'] = $user['LName'];
@@ -46,9 +46,9 @@ class Login{
 				exit;
 			}
 		}	
-			//Login failed
-			FlashBang::addFlashBang("Red", "Login Failed", "Username or Password incorrect. Try again");
-			
+		//Login failed
+		FlashBang::addFlashBang("Red", "Login Failed", "Username or Password incorrect. Try again");
+
 	}
 	static function csrfToken(){
 		if(!isset($_SESSION['proposal_csrf'])){
@@ -106,6 +106,17 @@ class Login{
 			return false;
 		}
 	}
+	function emailAvailable($email){
+		//Checks to see if a username exists. Return true if its not in use
+		$sql = "SELECT id FROM users WHERE email='".mysqli_real_escape_string($this->connection,$email)."' LIMIT 1";
+		$query = $this->connection->query($sql);
+		if($query->num_rows != 1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	function resetPassword($email){
 		//Reset a user's password to a random value and email the new password to them
 		$plaintext = bin2hex(openssl_random_pseudo_bytes(16));
@@ -115,16 +126,31 @@ class Login{
 			FlashBang::addFlashBang("Red", "Form Error", "Your email failed validation. Please fix your email address");
 			return false;
 		}
-		$stmt = $this->connection->prepare("UPDATE users SET Password=? WHERE email=? LIMIT 1");
+		$stmt = $this->connection->prepare("UPDATE users SET Password=? WHERE email=?");
 		$stmt->bind_param("ss",$password,$email);
 		if(!$stmt->execute()){
 			error_log("Password change failed for user ".$email);
 			$stmt->close();
 			return false;
 		}
-		if($stmt->affected_rows == 1){
+		if($stmt->affected_rows > 0){
 			$emailobj = new Email();
-			$emailobj->sendMessage($email, '[IPRO Proposals] Password Reset', 'A password reset has been requested for an account under your email address. Your temporary password has been set to '.$plaintext.' and you should change this password at your earliest convenience.'); 
+			$emailstr = "A password reset has been requested for an account or series of accounts under your email address. Your temporary password has been set to $plaintext and you should change this password at your earliest convenience.";
+			$stmt = $this->connection->prepare("SELECT Username FROM users WHERE email=?");
+			$stmt->bind_param("s",$email);
+			if(!$stmt->execute()){
+				error_log("Error finding accounts for ".$email);
+				$stmt->close();
+			} else {
+				$emailstr .= "\n\nThe usernames of your account or accounts are as follows:\n";
+				$result = $stmt->get_result();
+    				while($unarr = $result->fetch_array()){
+					$emailstr .= "$unarr[0]\n";
+				}
+				$result->close();
+				$stmt->close();
+			}
+			$emailobj->sendMessage($email, '[IPRO Proposals] Password Reset',$emailstr); 
 			return true;
 		}
 		return false;
@@ -180,21 +206,27 @@ class Login{
 		}
 		//Next we check if the username is available. if it is we make the account
 		if($this->usernameAvailable($username)){
-			$fname = mysqli_real_escape_string($this->connection,$fname);
-			$lname = mysqli_real_escape_string($this->connection,$lname);
-			$username = mysqli_real_escape_string($this->connection,$username);
-			$email = mysqli_real_escape_string($this->connection,$email);
-			$sql = "INSERT INTO users(FName,LName,Username,Password,Email,Level) 
-				VALUES('".$fname."',
-						'".$lname."',
-						'".$username."',
-						'".password_hash($password)."',
-						'".$email."',
-						'1')";
-			$query = $this->connection->query($sql);
-			$emailobj = new Email();
-			$emailobj->sendMessage($email, '[IPRO Proposals] Account Created', 'Hello '.$fname.' '.$lname.', Your account with username '.$username.' has been created. You can now use this account to sign into the IPRO Proposal system.');
-			return true;
+			if($this->emailAvailable($email)){
+				$fname = mysqli_real_escape_string($this->connection,$fname);
+				$lname = mysqli_real_escape_string($this->connection,$lname);
+				$username = mysqli_real_escape_string($this->connection,$username);
+				$email = mysqli_real_escape_string($this->connection,$email);
+				$sql = "INSERT INTO users(FName,LName,Username,Password,Email,Level) 
+					VALUES('".$fname."',
+							'".$lname."',
+							'".$username."',
+							'".password_hash($password)."',
+							'".$email."',
+							'1')";
+				$query = $this->connection->query($sql);
+				$emailobj = new Email();
+				$emailobj->sendMessage($email, '[IPRO Proposals] Account Created', 'Hello '.$fname.' '.$lname.', Your account with username '.$username.' has been created. You can now use this account to sign into the IPRO Proposal system.');
+				return true;
+			} else {
+				FlashBang::addFlashBang("Red", "Form Error", "E-mail address is already in use.");
+				return false;
+
+			}
 		}else{
 			FlashBang::addFlashBang("Red", "Form Error", "Username is already in use.");
 			return false;
