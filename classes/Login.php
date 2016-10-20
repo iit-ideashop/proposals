@@ -120,7 +120,13 @@ class Login{
 	function resetPassword($email){
 		//Reset a user's password to a random value and email the new password to them
 		$plaintext = bin2hex(openssl_random_pseudo_bytes(16));
+
 		$password = password_hash($plaintext,PASSWORD_DEFAULT);
+		if($password === FALSE){
+			error_log("password_hash failed");
+			FlashBang::addFlashBang("Red", "Error", "An internal error has occured.");
+			return false;
+		}
 		if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
 			//Email failed validation
 			FlashBang::addFlashBang("Red", "Form Error", "Your email failed validation. Please fix your email address");
@@ -144,7 +150,7 @@ class Login{
 			} else {
 				$emailstr .= "\n\nThe usernames of your account or accounts are as follows:\n";
 				$result = $stmt->get_result();
-    				while($unarr = $result->fetch_array()){
+				while($unarr = $result->fetch_array()){
 					$emailstr .= "$unarr[0]\n";
 				}
 				$result->close();
@@ -163,6 +169,10 @@ class Login{
 		}
 		$plaintext = $newpw;
 		$password = password_hash($plaintext,PASSWORD_DEFAULT);
+		if($password === FALSE){
+			error_log("password_hash failed");
+			return false;
+		}
 		$stmt = $this->connection->prepare("UPDATE users SET Password=? WHERE id=?");
 		$stmt->bind_param("ss",$password,$_SESSION['proposal_userID']);
 		if(!$stmt->execute()){
@@ -211,11 +221,18 @@ class Login{
 				$lname = mysqli_real_escape_string($this->connection,$lname);
 				$username = mysqli_real_escape_string($this->connection,$username);
 				$email = mysqli_real_escape_string($this->connection,$email);
+				$hashpw = password_hash($password,PASSWORD_DEFAULT);
+				if($hashpw === FALSE){
+					error_log("password_hash failed");
+					FlashBang::addFlashBang("Red", "Error", "An internal error has occured.");
+					return false;
+				}
+
 				$sql = "INSERT INTO users(FName,LName,Username,Password,Email,Level) 
 					VALUES('".$fname."',
 							'".$lname."',
 							'".$username."',
-							'".password_hash($password)."',
+							'".$hashpw."',
 							'".$email."',
 							'1')";
 				$query = $this->connection->query($sql);
